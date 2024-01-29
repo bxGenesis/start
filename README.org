@@ -1,0 +1,5 @@
+* Files for initial setup
+
+Typically used as
+
+wget https://oneOfTheseFiles.sh | bash

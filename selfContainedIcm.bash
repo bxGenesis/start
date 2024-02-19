@@ -7,6 +7,118 @@ exec &> >(tee "${logFile}")
 
 StandaloneIimBriefDescription="Bx2 Genesis -- Transforms The Distro To The Specified BxPlatform SwProfile"
 
+
+shopt -s expand_aliases
+shopt -s extglob
+#shopt
+
+alias _CommentBegin_='cat << _CommentEnd_ > /dev/null'
+
+
+function vis_moduleDescription {  cat  << _EOF_
+*  [[elisp:(org-cycle)][| ]]  *[Description:]*
+**  [[elisp:(org-cycle)][| ]]  Xrefs        :: *[Related/Xrefs:]*  <<Xref-Here->>  -- External Documents  [[elisp:(org-cycle)][| ]]
+**  [[elisp:(org-cycle)][| ]]  Panel        :: [[file:/libre/ByStar/InitialTemplates/activeDocs/blee/syncUpdate/virBox/fullUsagePanel-en.org::Xref-][Panel Roadmap Documentation]] [[elisp:(org-cycle)][| ]]
+**  [[elisp:(org-cycle)][| ]]  Overview     ::  [[elisp:(org-cycle)][| ]]
+
+ This script is part of the instructions for
+    Libre Platform Genesis
+ as documented in PLPC-110101
+ available at:
+     http://www.libreservices.org/PLPC/110101
+     http://www.neda.com/PLPC/110101
+
+
+ This and everything else that it brings over
+ is Free/Libre Software and
+ the produced service is Libre Services.
+
+
+ The latest version of this script can be obtained from
+   wget -N  http://www.bysource.org/lsip/lpGenesis.sh
+
+
+
+This is a STANDALONE script and does NOT rely on any
+osmt scripts.
+This is a single file, self contained script which
+augments a generic genesis machine to a state where it
+can use OSMT facilities to be further configured.
+
+Once OSMT has been configured it continues on
+with .../bin/lpSysMgmtSteps.sh
+
+
+ This script should run with the initial os shell which
+ can be any of:  bash, ksh88, ksh93, pdksh
+ It is now converging on bash.
+
+
+USAGE:
+Run ./lpGenesis.sh help
+for details
+Accepts zero or one or two arguments which can be the LOCATION and
+NAME for the host.
+
+ This script should run with the initial os shell which
+ can be any of:  bash, ksh88, ksh93, pdksh
+
+
+TODO:
+  - tar -xf --checkpoint
+  - cvs checkout stdout/stderr to /dev/null
+  - Create a logfile.
+  - Too many packages are being brought over.
+  - Make the script verify it is the latest with a wget
+  - wget the undo if not already there.
+_EOF_
+}
+
+
+_CommentBegin_
+*  [[elisp:(org-cycle)][| ]]  Examples      :: Examples [[elisp:(org-cycle)][| ]]
+_CommentEnd_
+
+
+function vis_examples {
+    typeset extraInfo="-h -v -n showRun -r basic"
+    #typeset extraInfo=""
+    typeset runInfo="-p ri=lsipusr:passive"
+
+    typeset examplesInfo="${extraInfo} ${runInfo}"
+
+    visLibExamplesOutput ${G_myName}
+  cat  << _EOF_
+$( examplesSeperatorTopLabel "${G_myName}" )
+$( examplesSeperatorChapter "Bx2Genesis.sh Renew" )
+${G_myName} ${extraInfo} -i renewMe
+$( examplesSeperatorChapter "Bx2 Targeted Software Profiles" )
+${G_myName} ${extraInfo} -i miniBlee
+$( examplesSeperatorSection "Software Profiles (SwP) -- Bx2 Ref Model " )
+${G_myName} ${extraInfo} -i baseIoC            # Blee + Ability To Import Io
+${G_myName} ${extraInfo} -i baseIoC atNeda     # Blee + Ability To Import Io
+${G_myName} ${extraInfo} -i userService        # Internal Services
+${G_myName} ${extraInfo} -i externalService    # Public Internet Services
+${G_myName} ${extraInfo} -i developer          # UserService + All the extras
+${G_myName} ${extraInfo} -i virtHost           # A Host For KVM
+$( examplesSeperatorSection "BxP Generic Characters" )
+${G_myName} ${extraInfo} -i blup  # Bx Light User Platform (BxP-User-SwP + BMIC)
+${G_myName} ${extraInfo} -i bmup  # Bx Mobile Usage Platform
+${G_myName} ${extraInfo} -i bdip  # Bx Developer Internal Platform
+${G_myName} ${extraInfo} -i busp  # Bx User Service Platform
+${G_myName} ${extraInfo} -i bxsp  # Bx External Service Platform
+$( examplesSeperatorChapter "Current Platform Info" )
+${G_myName} ${extraInfo} -i opRunDistFamilySet
+${G_myName} ${extraInfo} -i profile
+${G_myName} ${extraInfo} -i status
+$( examplesSeperatorChapter "Developer Examples" )
+${G_myName} ${extraInfo} -i devExamples
+_EOF_
+}
+
+
+
+
 ORIGIN="
 * Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
 * Latest Version Available At: http://www.bysource.org/lsip/bx2Genesis.sh
@@ -38,13 +150,6 @@ if [ -z "${BASH_VERSION}" ] ; then
     echo "UnSupported Bash"
     exit 1
 fi
-
-shopt -s expand_aliases
-shopt -s extglob
-#shopt
-
-alias _CommentBegin_='cat << _CommentEnd_ > /dev/null'
-
 
 _CommentBegin_
 *  [[elisp:(org-cycle)][| ]]  iimLib        :: /[dblock]/ iimStandaloneLib.bash [[elisp:(org-cycle)][| ]]
@@ -482,48 +587,6 @@ _EOF_
 _CommentBegin_
 *  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(delete-other-windows)][(1)]]  *Examples and IIFs*
 _CommentEnd_
-
-
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Examples      :: Examples [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-
-
-function vis_examples {
-    typeset extraInfo="-h -v -n showRun -r basic"
-    #typeset extraInfo=""
-    typeset runInfo="-p ri=lsipusr:passive"
-
-    typeset examplesInfo="${extraInfo} ${runInfo}"
-
-    visLibExamplesOutput ${G_myName} 
-  cat  << _EOF_
-$( examplesSeperatorTopLabel "${G_myName}" )
-$( examplesSeperatorChapter "Bx2Genesis.sh Renew" )
-${G_myName} ${extraInfo} -i renewMe
-$( examplesSeperatorChapter "Bx2 Targeted Software Profiles" )
-${G_myName} ${extraInfo} -i miniBlee
-$( examplesSeperatorSection "Software Profiles (SwP) -- Bx2 Ref Model " )
-${G_myName} ${extraInfo} -i baseIoC            # Blee + Ability To Import Io
-${G_myName} ${extraInfo} -i baseIoC atNeda     # Blee + Ability To Import Io
-${G_myName} ${extraInfo} -i userService        # Internal Services
-${G_myName} ${extraInfo} -i externalService    # Public Internet Services
-${G_myName} ${extraInfo} -i developer          # UserService + All the extras
-${G_myName} ${extraInfo} -i virtHost           # A Host For KVM
-$( examplesSeperatorSection "BxP Generic Characters" )
-${G_myName} ${extraInfo} -i blup  # Bx Light User Platform (BxP-User-SwP + BMIC) 
-${G_myName} ${extraInfo} -i bmup  # Bx Mobile Usage Platform
-${G_myName} ${extraInfo} -i bdip  # Bx Developer Internal Platform
-${G_myName} ${extraInfo} -i busp  # Bx User Service Platform
-${G_myName} ${extraInfo} -i bxsp  # Bx External Service Platform 
-$( examplesSeperatorChapter "Current Platform Info" )
-${G_myName} ${extraInfo} -i opRunDistFamilySet
-${G_myName} ${extraInfo} -i profile
-${G_myName} ${extraInfo} -i status
-$( examplesSeperatorChapter "Developer Examples" )
-${G_myName} ${extraInfo} -i devExamples
-_EOF_
-}
 
 
 _CommentBegin_

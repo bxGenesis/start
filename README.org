@@ -1,4 +1,13 @@
-* Files for initial setup
+* Bootstrapping ByStar, BISOS and Blee
+
+See PLPC-120074. Reproduce links to the book.
+
+* Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)
+
+Run:
+wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash
+
+Then
 
 Typically used as
 

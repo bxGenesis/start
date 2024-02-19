@@ -59,9 +59,46 @@ _EOF_
     }
     EH_assert [[ $# -eq 0 ]]
 
-    echo "We are about to install raw-bisos, the installation can take 25 minutes or so, please confirm this iahet you want to do: "
+    echo "We are about to install 'Raw-BISOS'"
+    echo "The installation can take 25 minutes or so,"
+    echo "Please confirm this is what you want to do: "
     _continueAfterThis
 
+    local curUser=$(id -u -n)
+
+    G_verbose="verbose"
+    G_runMode="showRun"
+
+    if [ -d "/bisos" ] ; then
+      EH_problem "Unexpected /bisos -- Aborting"
+      lpReturn
+    fi
+
+    ANT_raw "About to add ${curUser} to /etc/sudoers -- You will be prompted for root passwd."
+    su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+
+    ANT_raw "About to adjust /etc/apt/sources.list."
+    lpDo sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.orig
+    lpDo eval sudo grep -v '^deb cdrom:' /etc/apt/sources.list \> /tmp/sources.list
+    lpDo sudo mv /tmp/sources.list /etc/apt/sources.list
+    lpDo sudo apt-get update
+
+    ANT_raw "In case of failure of any sort, don't worry; you will have emacs."
+    lpDo sudo apt-get install -y emacs
+
+    if sysOS_isDeb12 ; then
+       ANT_raw "Debian 12, Very Good, You will be current! Installing bisos.provision with pipx"
+       lpDo sudo apt-get install -y pipx
+       lpDo pipx install bisos.provision
+       lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform
+    elif sysOS_isDeb11 ; then
+       ANT_raw "Debian 11, Consider using Debian12! Installing bisos.provision with pip3"
+       lpDo sudo apt-get install -y python3-pip
+       lpDo sudo pip3 install --upgrade bisos.provision
+       lpDo /usr/local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform
+    else
+      EH_problem "Unsuported OS=${sysOS} and Distro=${sysDist}"
+    fi
 
     lpReturn
 }
@@ -69,6 +106,13 @@ _EOF_
 function vis_examples {
     typeset extraInfo="-h -v -n showRun"
     #typeset extraInfo=""
+
+    local locName="./install-raw-bisos.sh"
+
+    if [ -f "${locName}" ] ; then
+      chmod 775 "${locName}"
+      G_myName="${locName}"
+    fi
 
     visLibExamplesOutput ${G_myName}
     cat  << _EOF_
@@ -80,19 +124,14 @@ _EOF_
 
 
 noArgsHook() {
-  vis_installRawBisos
-  #vis_examples
+  # vis_installRawBisos
+  vis_examples
 }
 
 
 _CommentBegin_
 *  [[elisp:(org-cycle)][| ]]  icmLib        :: /[dblock]/ icmStandaloneLib.bash [[elisp:(org-cycle)][| ]]
 _CommentEnd_
-
-scriptSrcRunBase="$( dirname ${BASH_SOURCE[0]} )"
-icmPkgRunBase=$(readlink -f ${scriptSrcRunBase}/..)
-icmPkgRunLibBashBase="${icmPkgRunBase}/lib/bash"
-
 
 sysOS=${sysOS-}
 sysDist=${sysDist-}
@@ -459,7 +498,7 @@ function _continueAfterThis {
     if [ ${G_humanUser} != "TRUE" ] ; then
         return
     fi
-    echo -n "Hit enter to continue, \"skip\" to skip or \"EXIT\" to exit: "
+    echo -n "Hit enter to continue, \"skip\" to skip this step or \"EXIT\" to exit: "
     skipIt=false
     while read line ; do
         if [[ "${line}_" == "SKIP_"  || "${line}_" == "skip_" ]] ; then
@@ -473,7 +512,7 @@ function _continueAfterThis {
         fi
 
         if [[ "${line}_" == "_" ]] ; then
-            #echo "Continuing ...."
+            echo "Continuing ...."
             break
         fi
 
@@ -481,7 +520,6 @@ function _continueAfterThis {
         echo -n "Hit enter to continue, \"skip\" to skip or \"EXIT\" to exit: "
     done
 }
-
 
 
 _CommentBegin_

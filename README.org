@@ -1,3 +1,4 @@
+# toc should come here.
 * Bootstrapping ByStar, BISOS and Blee
 
 See PLPC-120074. Reproduce links to the book.
@@ -7,8 +8,30 @@ See PLPC-120074. Reproduce links to the book.
 Run:
 wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash
 
-Then
+You will be presented with a install-raw-bisos.sh menu. Choose the last line, and run:
 
-Typically used as
+./install-raw-bisos.sh -h -v -n showRun -i installRawBisos
 
-wget https://oneOfTheseFiles.sh | bash
+Respond to the prompts and be patient. Raw-BISOS includes a lot of deb and pip packages.
+
+The following new top level directories will be created:
+
+/bisos
+/bxo
+/de
+
+* Obtaining a Fresh-Debian for Raw-BISOS
+
+** Physical Fresh-Debian-12 Installation
+
+Link to Panels
+
+** KVM Fresh-Debian-12 Installation
+
+Link to Panels
+
+* Using Your Raw-BISOS and Raw-Blee environment
+
+* About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting
+
+* Building Your Autonomous ByStar Site

@@ -79,7 +79,7 @@ _EOF_
 
     ANT_raw "About to adjust /etc/apt/sources.list."
     lpDo sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.orig
-    lpDo eval sudo grep -v '^deb cdrom:' /etc/apt/sources.list \> /tmp/sources.list
+    lpDo eval sudo grep -v \'^deb cdrom:\' /etc/apt/sources.list \> /tmp/sources.list
     lpDo sudo mv /tmp/sources.list /etc/apt/sources.list
     lpDo sudo apt-get update
 
@@ -1012,6 +1012,8 @@ G_checkMode=""
 
 loadSegment=""
 visibleFunction=""
+__opDo_prevScriptName=""
+__opDo_prevFunctionName=""
 
 while getopts e:T:c:i:p:l:u?n:r:vfh c
 do

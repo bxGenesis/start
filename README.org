@@ -3,25 +3,66 @@
 #+AUTHOR: Mohsen BANAN
 #+OPTIONS: toc:3
 
+* Overview of ByStar, BISOS and Blee
 
-* Overview
+The Libre-Halaal ByStar (By*) Digital Ecosystem is an interdisciplinary, and
+ethics-oriented non-proprietary digital ecosystem which challenges the existing
+proprietary American digital ecosystem while operating concurrently alongside
+it. BISOS: (By* Internet Services Operating System) is unified and universal
+framework for developing both internet services and software-service continuums
+that use internet services. BISOS is a layer on top of Debian. Blee: (BISOS
+Libre-Halaal Emacs Environment) is a layer on top of Emacs and BISOS, which
+creates a comprehensive integrated usage and development environment. Blee and
+BISOS are fully integrated.
 
-See PLPC-120074. Reproduce links to the book.
+ See: the "Nature of Polyexistentials" available on line at: PLPC-120033
+ for the bigger picture of how all of these fall in the bigger picture.
 
-#+TOC:
 
-* Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)
+* Table Of Contents     :TOC:
+- [[#overview-of-bystar-bisos-and-blee][Overview of ByStar, BISOS and Blee]]
+- [[#from-a-fresh-debian-12-or-11-to-raw-bisos][From a Fresh-Debian-12 (or 11) to Raw-BISOS]]
+  - [[#start-by-installing-raw-bisos-on-a-fresh-debian-12-or-11][Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)]]
+  - [[#start-using-your-raw-bisos][Start Using Your Raw-BISOS]]
+  - [[#a-summary-of-your-raw-bisos][A Summary of your Raw-BISOS]]
+- [[#bootstrapping-bystar-bisos-and-blee][Bootstrapping ByStar, BISOS and Blee]]
+- [[#obtaining-a-fresh-debian-for-raw-bisos][Obtaining a Fresh-Debian for Raw-BISOS]]
+  - [[#physical-fresh-debian-12-installation][Physical Fresh-Debian-12 Installation]]
+  - [[#kvm-fresh-debian-12-installation][KVM Fresh-Debian-12 Installation]]
+- [[#using-your-raw-bisos-and-raw-blee-environment][Using Your Raw-BISOS and Raw-Blee environment]]
+- [[#about-blee-panels------bystar-bisos-and-blee-are-self-documenting][About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting]]
+- [[#building-your-autonomous-bystar-site][Building Your Autonomous ByStar Site]]
+
+* From a Fresh-Debian-12 (or 11) to Raw-BISOS
+
+Raw-BISOS builds on a Fresh-Debian to provide a platform which can then be configured to become
+either a usage environment or a service platform.
+
+** Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)
+
 
 Run:
+
+#+begin_src sh
 wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash
+#+end_src
+
+
 
 You will be presented with a install-raw-bisos.sh menu. Choose the last line, and run:
-
+#+begin_src sh
 ./install-raw-bisos.sh -h -v -n showRun -i installRawBisos
+#+end_src
 
 Respond to the prompts and be patient. Raw-BISOS includes a lot of deb and pip packages.
 
+** Start Using Your Raw-BISOS
+
+Exit intra user. Login as bystr
 The following new top level directories will be created:
+
+** A Summary of your Raw-BISOS
+
 
 /bisos
 /bxo

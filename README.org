@@ -3,13 +3,13 @@
 #+AUTHOR: Mohsen BANAN
 #+OPTIONS: toc:3
 
-The *Libre-Halaal ByStar (By*) Digital Ecosystem* is an interdisciplinary, and
+The *Libre-Halaal ByStar (By\*) Digital Ecosystem* is an interdisciplinary, and
 ethics-oriented non-proprietary digital ecosystem which challenges the existing
 proprietary American digital ecosystem while operating concurrently alongside
 it. /BISOS/: (~By* Internet Services Operating System~) is unified and universal
 framework for developing both internet services and software-service continuums
-that use internet services. BISOS is a layer on top of Debian. /Blee/: (~BISOS
-Libre-Halaal Emacs Environment~) is a layer on top of Emacs and BISOS, which
+that use internet services. BISOS is a layer on top of Debian. /Blee/: (_BISOS
+Libre-Halaal Emacs Environment_) is a layer on top of Emacs and BISOS, which
 creates a comprehensive integrated usage and development environment. Blee and
 BISOS are fully integrated.
 
@@ -38,7 +38,7 @@ either a usage environment or a service platform.
 ** Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)
 
 
-Run:
+On a Fresly installed Debian system  as user intra (or vagrant), run:
 
 #+begin_src sh
 wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash

@@ -6,16 +6,17 @@
 The *Libre-Halaal ByStar Digital Ecosystem* (/By* DE/) is an interdisciplinary,
 and ethics-oriented non-proprietary digital ecosystem which challenges the
 existing proprietary American digital ecosystem while operating concurrently
-alongside it. On a global scale, By* is focussed on autonomy and privacy of the
-individual. *BISOS*: (/By* Internet Services Operating System/) is a unified and
-universal framework for developing both internet services and software-service
-continuums that use internet services. BISOS is a layer on top of Debian.
-*Blee*: (/BISOS Libre-Halaal Emacs Environment/) is a layer on top of Emacs and
-BISOS, which creates a comprehensive integrated usage and development
-environment. Blee and BISOS are fully integrated.
+alongside it. On a global scale, By* provide Internet Application Services which
+preserve autonomy and privacy of the individual. *BISOS*: (/By* Internet
+Services Operating System/) is a unified and universal framework for developing
+both internet services and software-service continuums that use internet
+services. BISOS is a layer on top of Debian. *Blee*: (/BISOS Libre-Halaal Emacs
+Environment/) is a layer on top of Emacs and BISOS, which creates a
+comprehensive integrated usage and development environment. Blee and BISOS are
+fully integrated.
 
- See: the "*Nature of Polyexistentials*" available on line at: PLPC-120033
- for the bigger picture of how all of these fall in the bigger picture.
+ See the "*Nature of Polyexistentials*" book available on line at: [[https://github.com/bxplpc/120033][PLPC-120033]]
+ for the bigger picture of how all of these fall in a bigger picture.
 
 
 * Table Of Contents     :TOC:

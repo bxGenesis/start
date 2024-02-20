@@ -1,7 +1,7 @@
 #+TITLE: Bootstrapping ByStar, BISOS and Blee
 #+DATE: <2024-02-19 Mon 16:27>
 #+AUTHOR: Mohsen BANAN
-#+OPTIONS: toc:3
+#+OPTIONS: toc:4
 
 The *Libre-Halaal ByStar Digital Ecosystem* (/By* DE/) is an interdisciplinary,
 and ethics-oriented non-proprietary digital ecosystem which challenges the
@@ -19,11 +19,11 @@ See the "*Nature of Polyexistentials*" book available on line at: [[https://gith
 
 Here we provide needed instructions for you to create your own BISOS-Site and adopt ByStar.
 
-* Table Of Contents     :TOC:
+* Table of Contents     :TOC:
 - [[#from-a-fresh-debian-12-or-11-to-raw-bisos][From a Fresh-Debian-12 (or 11) to Raw-BISOS]]
   - [[#start-by-installing-raw-bisos-on-a-fresh-debian-12-or-11][Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)]]
-  - [[#start-using-your-raw-bisos][Start Using Your Raw-BISOS]]
-  - [[#a-summary-of-your-raw-bisos-----what-has-been-installed][A Summary of your Raw-BISOS --- What has been Installed]]
+  - [[#using-your-raw-bisos][Using Your Raw-BISOS]]
+  - [[#summary-of-your-raw-bisos-setup-----what-has-been-installed][Summary of your Raw-BISOS Setup --- What has been Installed]]
 - [[#obtaining-a-fresh-debian-for-raw-bisos][Obtaining a Fresh-Debian for Raw-BISOS]]
   - [[#physical-fresh-debian-12-installation][Physical Fresh-Debian-12 Installation]]
   - [[#kvm-fresh-debian-12-installation][KVM Fresh-Debian-12 Installation]]
@@ -54,16 +54,43 @@ You will be presented with a install-raw-bisos.sh menu. Choose the last line, an
 
 Respond to the prompts and be patient. Raw-BISOS includes a lot of deb and pip packages.
 
-** Start Using Your Raw-BISOS
+** Using Your Raw-BISOS
 
 Exit intra user. Login as bystr
 The following new top level directories will be created:
 
-** A Summary of your Raw-BISOS --- What has been Installed
+** Summary of your Raw-BISOS Setup --- What has been Installed
 
+*** BISOS Base directories
 /bisos
 /bxo
 /de
+/var/bisos
+/opt/bisosProvisioner
+
+*** Created Accounts And Groups
+
+bisos group
+bisos account
+bystar account
+delimaccount
+
+*** /etc/sudoers
+
+- bisos
+  - bystar
+
+    *** Py Venvs --- pip packages
+
+    bisos
+    bisos/dev
+    adopted
+
+    *** Deb Pkgs
+
+    * Node Packages
+    
+    
 
 
 * Obtaining a Fresh-Debian for Raw-BISOS

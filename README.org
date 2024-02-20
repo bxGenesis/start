@@ -3,15 +3,16 @@
 #+AUTHOR: Mohsen BANAN
 #+OPTIONS: toc:3
 
-The *Libre-Halaal ByStar Digital Ecosystem* (/By* DE/) is an interdisciplinary, and
-ethics-oriented non-proprietary digital ecosystem which challenges the existing
-proprietary American digital ecosystem while operating concurrently alongside
-it. *BISOS*: (/By* Internet Services Operating System/) is unified and universal
-framework for developing both internet services and software-service continuums
-that use internet services. BISOS is a layer on top of Debian. /Blee/: (/BISOS
-Libre-Halaal Emacs Environment/) is a layer on top of Emacs and BISOS, which
-creates a comprehensive integrated usage and development environment. Blee and
-BISOS are fully integrated.
+The *Libre-Halaal ByStar Digital Ecosystem* (/By* DE/) is an interdisciplinary,
+and ethics-oriented non-proprietary digital ecosystem which challenges the
+existing proprietary American digital ecosystem while operating concurrently
+alongside it. On a global scale, By* is focussed on autonomy and privacy of the
+individual. *BISOS*: (/By* Internet Services Operating System/) is a unified and
+universal framework for developing both internet services and software-service
+continuums that use internet services. BISOS is a layer on top of Debian.
+*Blee*: (/BISOS Libre-Halaal Emacs Environment/) is a layer on top of Emacs and
+BISOS, which creates a comprehensive integrated usage and development
+environment. Blee and BISOS are fully integrated.
 
  See: the "*Nature of Polyexistentials*" available on line at: PLPC-120033
  for the bigger picture of how all of these fall in the bigger picture.
@@ -21,12 +22,11 @@ BISOS are fully integrated.
 - [[#from-a-fresh-debian-12-or-11-to-raw-bisos][From a Fresh-Debian-12 (or 11) to Raw-BISOS]]
   - [[#start-by-installing-raw-bisos-on-a-fresh-debian-12-or-11][Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)]]
   - [[#start-using-your-raw-bisos][Start Using Your Raw-BISOS]]
-  - [[#a-summary-of-your-raw-bisos][A Summary of your Raw-BISOS]]
-- [[#bootstrapping-bystar-bisos-and-blee][Bootstrapping ByStar, BISOS and Blee]]
+  - [[#a-summary-of-your-raw-bisos-----what-has-been-installed][A Summary of your Raw-BISOS --- What has been Installed]]
 - [[#obtaining-a-fresh-debian-for-raw-bisos][Obtaining a Fresh-Debian for Raw-BISOS]]
   - [[#physical-fresh-debian-12-installation][Physical Fresh-Debian-12 Installation]]
   - [[#kvm-fresh-debian-12-installation][KVM Fresh-Debian-12 Installation]]
-- [[#using-your-raw-bisos-and-raw-blee-environment][Using Your Raw-BISOS and Raw-Blee environment]]
+- [[#using-your-raw-bisos-and-raw-blee-environment-outside-of-bystar][Using Your Raw-BISOS and Raw-Blee Environment Outside of ByStar]]
 - [[#about-blee-panels------bystar-bisos-and-blee-are-self-documenting][About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting]]
 - [[#building-your-autonomous-bystar-site][Building Your Autonomous ByStar Site]]
 
@@ -58,17 +58,11 @@ Respond to the prompts and be patient. Raw-BISOS includes a lot of deb and pip p
 Exit intra user. Login as bystr
 The following new top level directories will be created:
 
-** A Summary of your Raw-BISOS
-
+** A Summary of your Raw-BISOS --- What has been Installed
 
 /bisos
 /bxo
 /de
-
-
-* Bootstrapping ByStar, BISOS and Blee
-
-
 
 
 * Obtaining a Fresh-Debian for Raw-BISOS
@@ -81,7 +75,7 @@ Link to Panels
 
 Link to Panels
 
-* Using Your Raw-BISOS and Raw-Blee environment
+* Using Your Raw-BISOS and Raw-Blee Environment Outside of ByStar
 
 * About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting
 

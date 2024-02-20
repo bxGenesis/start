@@ -14,10 +14,10 @@ services. BISOS is a layer on top of Debian. *Blee*: (/BISOS Libre-Halaal Emacs
 Environment/) is a layer on top of Emacs and BISOS, which creates a
 comprehensive integrated usage and development environment. Blee and BISOS are
 fully integrated.
-
- See the "*Nature of Polyexistentials*" book available on line at: [[https://github.com/bxplpc/120033][PLPC-120033]]
+See the "*Nature of Polyexistentials*" book available on line at: [[https://github.com/bxplpc/120033][PLPC-120033]]
  for the bigger picture of how all of these fall in a bigger picture.
 
+Here we provide needed instructions for you to create your own BISOS-Site and adopt ByStar.
 
 * Table Of Contents     :TOC:
 - [[#from-a-fresh-debian-12-or-11-to-raw-bisos][From a Fresh-Debian-12 (or 11) to Raw-BISOS]]

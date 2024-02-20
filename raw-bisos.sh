@@ -1,7 +1,9 @@
 #!/bin/bash
 
+
+localName="install-raw-bisos"
 dateTag=$( date +%y%m%d%H%M%S )
-logFile=~/raw-bisos-${dateTag}.log
+logFile=~/${localName}-${dateTag}-log.org
 
 exec &> >(tee "${logFile}")
 
@@ -18,9 +20,12 @@ function vis_moduleDescription {  cat  << _EOF_
 This script installs raw-bisos on a fresh debian-11 or debian-12.
 
 On a fresh debian machine, the user typically runs:
-wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | bash
+wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash
 
-The code for this script is at: https://github.com/bxGenesis/start
+And then:
+./install-raw-bisos.sh -h -v -n showRun -i installRawBisos
+
+The code and documentation for this script is at: https://github.com/bxGenesis/start
 This is Standalone-ICM script that starts with vis_installRawBisos
 _EOF_
 }
@@ -107,7 +112,7 @@ function vis_examples {
     typeset extraInfo="-h -v -n showRun"
     #typeset extraInfo=""
 
-    local locName="./install-raw-bisos.sh"
+    local locName="./${localName}.sh"
 
     if [ -f "${locName}" ] ; then
       chmod 775 "${locName}"

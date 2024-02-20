@@ -45,9 +45,11 @@ On a Fresly installed Debian system  as user intra (or vagrant), run:
 wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash
 #+end_src
 
+The downloaded script is saved in "./install-raw-bisos.sh". You can inspect it
+    before running it for installation purposes. Feeding to bash has only
+    executed the display of a menu.
 
-
-You will be presented with a install-raw-bisos.sh menu. Choose the last line, and run:
+Choose the last line of thatch, and run:
 #+begin_src sh
 ./install-raw-bisos.sh -h -v -n showRun -i installRawBisos
 #+end_src
@@ -62,6 +64,7 @@ The following new top level directories will be created:
 ** Summary of your Raw-BISOS Setup --- What has been Installed
 
 *** BISOS Base directories
+
 /bisos
 /bxo
 /de
@@ -80,17 +83,16 @@ delimaccount
 - bisos
   - bystar
 
-    *** Py Venvs --- pip packages
+*** Py Venvs --- pip packages
 
     bisos
     bisos/dev
     adopted
 
-    *** Deb Pkgs
+*** Deb Pkgs
 
-    * Node Packages
-    
-    
+*** Node Packages
+        
 
 
 * Obtaining a Fresh-Debian for Raw-BISOS

@@ -3,15 +3,13 @@
 #+AUTHOR: Mohsen BANAN
 #+OPTIONS: toc:3
 
-* Overview of ByStar, BISOS and Blee
-
-The Libre-Halaal ByStar (By*) Digital Ecosystem is an interdisciplinary, and
+The *Libre-Halaal ByStar (By*) Digital Ecosystem* is an interdisciplinary, and
 ethics-oriented non-proprietary digital ecosystem which challenges the existing
 proprietary American digital ecosystem while operating concurrently alongside
-it. BISOS: (By* Internet Services Operating System) is unified and universal
+it. /BISOS/: (~By* Internet Services Operating System~) is unified and universal
 framework for developing both internet services and software-service continuums
-that use internet services. BISOS is a layer on top of Debian. Blee: (BISOS
-Libre-Halaal Emacs Environment) is a layer on top of Emacs and BISOS, which
+that use internet services. BISOS is a layer on top of Debian. /Blee/: (~BISOS
+Libre-Halaal Emacs Environment~) is a layer on top of Emacs and BISOS, which
 creates a comprehensive integrated usage and development environment. Blee and
 BISOS are fully integrated.
 
@@ -20,7 +18,6 @@ BISOS are fully integrated.
 
 
 * Table Of Contents     :TOC:
-- [[#overview-of-bystar-bisos-and-blee][Overview of ByStar, BISOS and Blee]]
 - [[#from-a-fresh-debian-12-or-11-to-raw-bisos][From a Fresh-Debian-12 (or 11) to Raw-BISOS]]
   - [[#start-by-installing-raw-bisos-on-a-fresh-debian-12-or-11][Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)]]
   - [[#start-using-your-raw-bisos][Start Using Your Raw-BISOS]]

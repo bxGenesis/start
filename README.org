@@ -17,13 +17,14 @@ fully integrated.
 See the "*Nature of Polyexistentials*" book available on line at: [[https://github.com/bxplpc/120033][PLPC-120033]]
  for the bigger picture of how all of these fall in a bigger picture.
 
-Here we provide needed instructions for you to create your own BISOS-Site and adopt ByStar.
+Here we provide needed instructions for you to start adopting ByStar by creating
+your own Raw-BISOS Platform and your own BISOS-Site.
 
 * Table of Contents     :TOC:
 - [[#from-a-fresh-debian-12-or-11-to-raw-bisos][From a Fresh-Debian-12 (or 11) to Raw-BISOS]]
   - [[#start-by-installing-raw-bisos-on-a-fresh-debian-12-or-11][Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)]]
   - [[#using-your-raw-bisos][Using Your Raw-BISOS]]
-  - [[#summary-of-your-raw-bisos-setup-----what-has-been-installed][Summary of your Raw-BISOS Setup --- What has been Installed]]
+- [[#about-your-raw-bisos-platform-----what-has-been-installed][About your Raw-BISOS Platform --- What has been Installed]]
 - [[#obtaining-a-fresh-debian-for-raw-bisos][Obtaining a Fresh-Debian for Raw-BISOS]]
   - [[#physical-fresh-debian-12-installation][Physical Fresh-Debian-12 Installation]]
   - [[#kvm-fresh-debian-12-installation][KVM Fresh-Debian-12 Installation]]
@@ -58,10 +59,12 @@ Respond to the prompts and be patient. Raw-BISOS includes a lot of deb and pip p
 
 ** Using Your Raw-BISOS
 
-Exit intra user. Login as bystr
+Exit intra user. Login as bystar.
+Start blee.
+You can inspect the installation by visiting the installation log file -- in ~intra/install-raw-bisos-dateTag-log.org
 The following new top level directories will be created:
 
-** Summary of your Raw-BISOS Setup --- What has been Installed
+* About your Raw-BISOS Platform --- What has been Installed
 
 *** BISOS Base directories
 

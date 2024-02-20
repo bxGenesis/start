@@ -1,7 +1,14 @@
-# toc should come here.
-* Bootstrapping ByStar, BISOS and Blee
+#+TITLE: Bootstrapping ByStar, BISOS and Blee
+#+DATE: <2024-02-19 Mon 16:27>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:3
+
+
+* Overview
 
 See PLPC-120074. Reproduce links to the book.
+
+#+TOC:
 
 * Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)
 
@@ -19,6 +26,12 @@ The following new top level directories will be created:
 /bisos
 /bxo
 /de
+
+
+* Bootstrapping ByStar, BISOS and Blee
+
+
+
 
 * Obtaining a Fresh-Debian for Raw-BISOS
 

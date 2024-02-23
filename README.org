@@ -18,53 +18,53 @@ See the "*Nature of Polyexistentials*" book available on line at: [[https://gith
  for the bigger picture of how all of these fall in a bigger picture.
 
 Here we provide needed instructions for you to start adopting ByStar by creating
-your own Raw-BISOS Platform and your own BISOS-Site.
+your own Unsited-BISOS Platform and your own BISOS-Site.
 
 * Table of Contents     :TOC:
-- [[#from-a-fresh-debian-12-or-11-to-raw-bisos][From a Fresh-Debian-12 (or 11) to Raw-BISOS]]
-  - [[#start-by-installing-raw-bisos-on-a-fresh-debian-12-or-11][Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)]]
-  - [[#using-your-raw-bisos][Using Your Raw-BISOS]]
-- [[#about-your-raw-bisos-platform-----what-has-been-installed][About your Raw-BISOS Platform --- What has been Installed]]
-- [[#obtaining-a-fresh-debian-for-raw-bisos][Obtaining a Fresh-Debian for Raw-BISOS]]
+- [[#from-a-fresh-debian-12-or-11-to-unsited-bisos][From a Fresh-Debian-12 (or 11) to Unsited-BISOS]]
+  - [[#start-by-installing-unsited-bisos-on-a-fresh-debian-12-or-11][Start By Installing Unsited-BISOS on a Fresh-Debian-12 (or 11)]]
+  - [[#using-your-unsited-bisos][Using Your Unsited-BISOS]]
+- [[#about-your-unsited-bisos-platform-----what-has-been-installed][About your Unsited-BISOS Platform --- What has been Installed]]
+- [[#obtaining-a-fresh-debian-for-unsited-bisos][Obtaining a Fresh-Debian for Unsited-BISOS]]
   - [[#physical-fresh-debian-12-installation][Physical Fresh-Debian-12 Installation]]
   - [[#kvm-fresh-debian-12-installation][KVM Fresh-Debian-12 Installation]]
-- [[#using-your-raw-bisos-and-raw-blee-environment-outside-of-bystar][Using Your Raw-BISOS and Raw-Blee Environment Outside of ByStar]]
+- [[#using-your-unsited-bisos-and-unsited-blee-environment-outside-of-bystar][Using Your Unsited-BISOS and Unsited-Blee Environment Outside of ByStar]]
 - [[#about-blee-panels------bystar-bisos-and-blee-are-self-documenting][About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting]]
 - [[#building-your-autonomous-bystar-site][Building Your Autonomous ByStar Site]]
 
-* From a Fresh-Debian-12 (or 11) to Raw-BISOS
+* From a Fresh-Debian-12 (or 11) to Unsited-BISOS
 
-Raw-BISOS builds on a Fresh-Debian to provide a platform which can then be configured to become
+Unsited-BISOS builds on a Fresh-Debian to provide a platform which can then be configured to become
 either a usage environment or a service platform.
 
-** Start By Installing Raw-BISOS on a Fresh-Debian-12 (or 11)
+** Start By Installing Unsited-BISOS on a Fresh-Debian-12 (or 11)
 
 
 On a Fresly installed Debian system  as user intra (or vagrant), run:
 
 #+begin_src sh
-wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash
+wget -q -O - https://unsited.githubusercontent.com/bxGenesis/start/main/unsited-bisos.sh | tee install-unsited-bisos.sh | bash
 #+end_src
 
-The downloaded script is saved in "./install-raw-bisos.sh". You can inspect it
+The downloaded script is saved in "./install-unsited-bisos.sh". You can inspect it
     before running it for installation purposes. Feeding to bash has only
     executed the display of a menu.
 
 Choose the last line of thatch, and run:
 #+begin_src sh
-./install-raw-bisos.sh -h -v -n showRun -i installRawBisos
+./install-unsited-bisos.sh -h -v -n showRun -i installUnsitedBisos
 #+end_src
 
-Respond to the prompts and be patient. Raw-BISOS includes a lot of deb and pip packages.
+Respond to the prompts and be patient. Unsited-BISOS includes a lot of deb and pip packages.
 
-** Using Your Raw-BISOS
+** Using Your Unsited-BISOS
 
 Exit intra user. Login as bystar.
 Start blee.
-You can inspect the installation by visiting the installation log file -- in ~intra/install-raw-bisos-dateTag-log.org
+You can inspect the installation by visiting the installation log file -- in ~intra/install-unsited-bisos-dateTag-log.org
 The following new top level directories will be created:
 
-* About your Raw-BISOS Platform --- What has been Installed
+* About your Unsited-BISOS Platform --- What has been Installed
 
 *** BISOS Base directories
 
@@ -98,7 +98,7 @@ delimaccount
         
 
 
-* Obtaining a Fresh-Debian for Raw-BISOS
+* Obtaining a Fresh-Debian for Unsited-BISOS
 
 ** Physical Fresh-Debian-12 Installation
 
@@ -108,7 +108,7 @@ Link to Panels
 
 Link to Panels
 
-* Using Your Raw-BISOS and Raw-Blee Environment Outside of ByStar
+* Using Your Unsited-BISOS and Unsited-Blee Environment Outside of ByStar
 
 * About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting
 

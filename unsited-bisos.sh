@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-localName="install-raw-bisos"
+localName="install-unsited-bisos"
 dateTag=$( date +%y%m%d%H%M%S )
 logFile=~/${localName}-${dateTag}-log.org
 
@@ -17,16 +16,16 @@ shopt -s expand_aliases
 shopt -s extglob
 
 function vis_moduleDescription {  cat  << _EOF_
-This script installs raw-bisos on a fresh debian-11 or debian-12.
+This script installs unsited-bisos on a fresh debian-11 or debian-12.
 
 On a fresh debian machine, the user typically runs:
-wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee install-raw-bisos.sh | bash
+wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/unsited-bisos.sh | tee install-unsited-bisos.sh | bash
 
 And then:
-./install-raw-bisos.sh -h -v -n showRun -i installRawBisos
+./install-unsited-bisos.sh -h -v -n showRun -i installUnsitedBisos
 
 The code and documentation for this script is at: https://github.com/bxGenesis/start
-This is Standalone-ICM script that starts with vis_installRawBisos
+This is Standalone-ICM script that starts with vis_installUnsitedBisos
 _EOF_
 }
 
@@ -57,14 +56,14 @@ alias retIfFail='errVal=$?; if [[ ${errVal} != 0 ]] ; then  printf  >&2 "retFail
 alias retIfSuccess='errVal=$?; if [[ ${errVal} == 0 ]] ; then  printf  >&2 "retSuccess,${G_myName}::$FUNCNAME:$LINENO (ret=${errVal})"; return ${errVal}; fi'
 
 
-function vis_installRawBisos {
+function vis_installUnsitedBisos {
     G_funcEntry
     function describeF {  G_funcEntryShow; cat  << _EOF_
 _EOF_
     }
     EH_assert [[ $# -eq 0 ]]
 
-    echo "We are about to install 'Raw-BISOS'"
+    echo "We are about to install 'Unsited-Bisos'"
     echo "The installation can take 25 minutes or so,"
     echo "Please confirm this is what you want to do: "
     _continueAfterThis
@@ -123,13 +122,13 @@ function vis_examples {
     cat  << _EOF_
 $( examplesSeperatorTopLabel "${G_myFullName}" )
 $( examplesSeperatorChapter "BISOS Provisioning:: Standalone ICM Sets Up Selfcontained ICMs" )
-${G_myName} ${extraInfo} -i installRawBisos
+${G_myName} ${extraInfo} -i installUnsitedBisos
 _EOF_
 }
 
 
 noArgsHook() {
-  # vis_installRawBisos
+  # vis_installUnsitedBisos
   vis_examples
 }
 

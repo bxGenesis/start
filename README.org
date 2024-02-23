@@ -43,7 +43,7 @@ either a usage environment or a service platform.
 On a Fresly installed Debian system  as user intra (or vagrant), run:
 
 #+begin_src sh
-wget -q -O - https://unsited.githubusercontent.com/bxGenesis/start/main/unsited-bisos.sh | tee install-unsited-bisos.sh | bash
+wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/unsited-bisos.sh | tee install-unsited-bisos.sh | bash
 #+end_src
 
 The downloaded script is saved in "./install-unsited-bisos.sh". You can inspect it

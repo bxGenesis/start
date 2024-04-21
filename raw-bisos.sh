@@ -26,6 +26,8 @@ And then:
 
 The code and documentation for this script is at: https://github.com/bxGenesis/start
 This is Standalone-ICM script that starts with vis_installUnsitedBisos
+
+The equivalent of this script as a BISOS-ICM is /bisos/core/bsip/bin/unsitedBisosDeploy.sh
 _EOF_
 }
 
@@ -55,6 +57,28 @@ alias EH_retOnFail='errVal=$?; if [[ ${errVal} != 0 ]] ; then  printf  >&2 "EH_,
 alias retIfFail='errVal=$?; if [[ ${errVal} != 0 ]] ; then  printf  >&2 "retFail,${G_myName}::$FUNCNAME:$LINENO (ret=${errVal})"; return ${errVal}; fi'
 alias retIfSuccess='errVal=$?; if [[ ${errVal} == 0 ]] ; then  printf  >&2 "retSuccess,${G_myName}::$FUNCNAME:$LINENO (ret=${errVal})"; return ${errVal}; fi'
 
+function vis_deBisosIfy {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    G_verbose="verbose"
+    G_runMode="showRun"
+
+    if sysOS_isDeb12 ; then
+       ANT_raw "Debian 12, DeBisosIfy-ing"
+       lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i deBisosIfy
+    elif sysOS_isDeb11 ; then
+       ANT_raw "Debian 11, DeBisosIfy-ing"
+       lpDo /usr/local/bin/provisionBisos.sh -h -v -n showRun -i deBisosIfy
+    else
+      EH_problem "Unsuported OS=${sysOS} and Distro=${sysDist}"
+    fi
+
+    lpReturn
+}
 
 function vis_installUnsitedBisos {
     G_funcEntry
@@ -107,6 +131,7 @@ _EOF_
     lpReturn
 }
 
+
 function vis_examples {
     typeset extraInfo="-h -v -n showRun"
     #typeset extraInfo=""
@@ -121,6 +146,8 @@ function vis_examples {
     visLibExamplesOutput ${G_myName}
     cat  << _EOF_
 $( examplesSeperatorTopLabel "${G_myFullName}" )
+$( examplesSeperatorChapter "BISOS Provisioning:: DeBisosIfy for ReInstallation" )
+${G_myName} ${extraInfo} -i deBisosIfy
 $( examplesSeperatorChapter "BISOS Provisioning:: Standalone ICM Sets Up Selfcontained ICMs" )
 ${G_myName} ${extraInfo} -i installUnsitedBisos
 _EOF_

@@ -18,7 +18,7 @@ Polyexistentials*" book for the bigger picture of how all of ByStar fits togethe
 
 ------------------------------------------------------------------------
 
-#+html: <img align="right" src="images/frontCover-1.jpg" height="170" />
+#+html: <img align="right" src="images/frontCover-1.jpg" height="200" />
 #+html: <p align="center"><font size="+4"><b>Nature of Polyexistentials:</font></b></p>
 #+html: <p align="center"><b>Basis for Abolishment of the Western Intellectual Property Rights Regime</b></p>
 #+html: <p align="center"><b>And Introduction of the Libre-Halaal ByStar Digital Ecosystem</b></p>
@@ -39,8 +39,6 @@ your own Raw-BISOS Platform and your own ByStar-Rims-Site.
   :CUSTOM_ID: bootstrapping-raw-bisos-from-fresh-debian
   :END:
 
- [sec:BootstrappingRaw-BISOSFromFresh-Debian]
-
 We refer to the base software of BISOS and Blee without any
 customization as Raw-BISOS and Raw-Blee. Raw-BISOS augments a
 Fresh-Debian such that other layers of BISOS installation can be
@@ -49,10 +47,8 @@ performed.
 On a Freshly installed Debian system, run:
 
 #+begin_src sh
-wget -q -O -
-https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh |
-$\backslash$\\
-tee raw-bisos.sh | $\backslash$\\
+wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | \
+tee raw-bisos.sh | \
 bash
 #+end_src
 

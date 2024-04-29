@@ -18,19 +18,7 @@ See the "*Nature of Polyexistentials*" book available on line at: [[https://gith
  for the bigger picture of how all of these fall in a bigger picture.
 
 Here we provide needed instructions for you to start adopting ByStar by creating
-your own Unsited-BISOS Platform and your own BISOS-Site.
-
-* Table of Contents     :TOC:
-- [[#from-a-fresh-debian-12-or-11-to-unsited-bisos][From a Fresh-Debian-12 (or 11) to Unsited-BISOS]]
-  - [[#start-by-installing-unsited-bisos-on-a-fresh-debian-12-or-11][Start By Installing Unsited-BISOS on a Fresh-Debian-12 (or 11)]]
-  - [[#using-your-unsited-bisos][Using Your Unsited-BISOS]]
-- [[#about-your-unsited-bisos-platform-----what-has-been-installed][About your Unsited-BISOS Platform --- What has been Installed]]
-- [[#obtaining-a-fresh-debian-for-unsited-bisos][Obtaining a Fresh-Debian for Unsited-BISOS]]
-  - [[#physical-fresh-debian-12-installation][Physical Fresh-Debian-12 Installation]]
-  - [[#kvm-fresh-debian-12-installation][KVM Fresh-Debian-12 Installation]]
-- [[#using-your-unsited-bisos-and-unsited-blee-environment-outside-of-bystar][Using Your Unsited-BISOS and Unsited-Blee Environment Outside of ByStar]]
-- [[#about-blee-panels------bystar-bisos-and-blee-are-self-documenting][About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting]]
-- [[#building-your-autonomous-bystar-site][Building Your Autonomous ByStar Site]]
+your own Raw-BISOS Platform and your own ByStar-Rims-Site.
 
 * From a Fresh-Debian-12 (or 11) to Unsited-BISOS
 
@@ -55,61 +43,636 @@ Choose the last line of thatch, and run:
 ./install-unsited-bisos.sh -h -v -n showRun -i installUnsitedBisos
 #+end_src
 
-Respond to the prompts and be patient. Unsited-BISOS includes a lot of deb and pip packages.
 
-** Using Your Unsited-BISOS
+* Bootstrapping Raw-BISOS From Fresh-Debian
+  :PROPERTIES:
+  :CUSTOM_ID: bootstrapping-raw-bisos-from-fresh-debian
+  :END:
 
-Exit intra user. Login as bystar.
-Start blee.
-You can inspect the installation by visiting the installation log file -- in ~intra/install-unsited-bisos-dateTag-log.org
-The following new top level directories will be created:
+ [sec:BootstrappingRaw-BISOSFromFresh-Debian]
 
-* About your Unsited-BISOS Platform --- What has been Installed
+We refer to the base software of BISOS and Blee without any
+customization as Raw-BISOS and Raw-Blee. Raw-BISOS augments a
+Fresh-Debian such that other layers of BISOS installation can be
+performed.
 
-*** BISOS Base directories
+On a Freshly installed Debian system, run:
 
-/bisos
-/bxo
-/de
-/var/bisos
-/opt/bisosProvisioner
+wget -q -O -
+https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh |
+$\backslash$\\
+tee raw-bisos.sh | $\backslash$\\
+bash
 
-*** Created Accounts And Groups
+The above command downloads the master installation script and feeds it
+to bash. Bash execution is limited to display of a menu.
 
-bisos group
-bisos account
-bystar account
-delimaccount
+The downloaded script is saved in =./raw-bisos.sh=. You can inspect that
+script before running it for installation purposes.
+Section [[#sec:Whatraw-bisos.shDoes][[sec:Whatraw-bisos.shDoes]]] --- ,
+describes what happens inside of =./raw-bisos.sh=.
 
-*** /etc/sudoers
+When you are ready, you can choose the last line of the menu that was
+displayed, and run:
 
-- bisos
-  - bystar
+./raw-bisos.sh -h -v -n showRun -i installUnsitedBisos
 
-*** Py Venvs --- pip packages
+Respond to the prompts and be patient. Raw-BISOS installs a lot of deb,
+pip, npm, and emacs packages. Upon completion of the installation, you
+can log into your Raw-BISOS and install additional layers and customize
+your environments.
 
-    bisos
-    bisos/dev
-    adopted
-
-*** Deb Pkgs
-
-*** Node Packages
-        
+In the following sections, we guide you through that process.
 
 
-* Obtaining a Fresh-Debian for Unsited-BISOS
+* Table of Contents     :TOC:
+- [[#from-a-fresh-debian-12-or-11-to-unsited-bisos][From a Fresh-Debian-12 (or 11) to Unsited-BISOS]]
+  - [[#start-by-installing-unsited-bisos-on-a-fresh-debian-12-or-11][Start By Installing Unsited-BISOS on a Fresh-Debian-12 (or 11)]]
+- [[#bootstrapping-raw-bisos-from-fresh-debian][Bootstrapping Raw-BISOS From Fresh-Debian]]
+- [[#deploying-bisos-and-bystar-----layer-by-layer][Deploying BISOS and ByStar --- Layer by Layer]]
+  - [[#hardware-layer-----resource-assumption][Hardware Layer --- Resource Assumption]]
+  - [[#universal-fresh-debian-layer][Universal Fresh-Debian Layer]]
+  - [[#creating-raw-bisos-and-raw-blee-----from-fresh-debian][Creating Raw-BISOS (and Raw-Blee) --- From Fresh-Debian]]
+  - [[#bisos-service-platform-----vm-hosting][BISOS-Service-Platform --- VM Hosting]]
+  - [[#bystar-rims-site][ByStar-Rims-Site]]
+  - [[#pals-self-hosting-in-the-exposed-rim][PALS-Self-Hosting in the Exposed Rim]]
+  - [[#sited-blee-environment][Sited-Blee-Environment]]
+- [[#bisos-software-bill-of-materials-----bisos-sbom][BISOS Software Bill Of Materials --- BISOS-SBOM]]
+  - [[#bisos-native-software][BISOS Native Software]]
+  - [[#bisos-adopted-software][BISOS Adopted Software]]
+- [[#an-overview-of-bisos-directories-and-accounts][An Overview of BISOS Directories and Accounts]]
+  - [[#bisos-accounts-and-groups][BISOS Accounts and Groups]]
+  - [[#bisos-directories][BISOS Directories]]
+- [[#current-state-and-status-of-bisos-and-bystar][Current State and Status of BISOS and ByStar]]
+  - [[#current-status-of-possession-assertable-libre-services][Current Status of Possession Assertable Libre Services]]
+  - [[#current-status-of-the-usage-environment-----blee][Current Status of the Usage Environment --- Blee]]
+- [[#participating-in-bisos-and-blee-development][Participating in BISOS and Blee Development]]
 
-** Physical Fresh-Debian-12 Installation
+* Deploying BISOS and ByStar --- Layer by Layer
+  :PROPERTIES:
+  :CUSTOM_ID: deploying-bisos-and-bystar-layer-by-layer
+  :END:
 
-Link to Panels
+Basic design of BISOS is layered. Any BISOS layer can be useful for a
+particular purpose. These layers build on each other.
 
-** KVM Fresh-Debian-12 Installation
+Figure [[#fig:provisioning][[fig:provisioning]]], depicts how these
+layers are deployed. The layers on left are service oriented. The layers
+on the right are usage oriented.
 
-Link to Panels
+[[/lcnt/lgpc/bystar/permanent/common/figures/provisioning.pdf]]
 
-* Using Your Unsited-BISOS and Unsited-Blee Environment Outside of ByStar
+Some BISOS layers can be used outside of the ByStar context. Here we
+introduce 5 specific layers, based on intent of usage.
 
-* About Blee-Panels  --- ByStar, BISOS and Blee are self-documenting
+A brief description of each layer follows.
 
-* Building Your Autonomous ByStar Site
+- Raw-BISOS and Raw-Blee: :: \\
+  BISOS and Blee can be considered in two parts, the software of BISOS
+  and Blee and customization of BISOS and Blee, for use in particular
+  site, with particular application by particular users. We refer to the
+  software of BISOS and Blee without any customization as Raw-BISOS and
+  Raw-Blee.
+
+  Raw-BISOS and Raw-Blee can be used outside of the ByStar context for
+  various purposes.
+
+- BISOS-Service-Platform --- BISOS as a Virtual Machine Hosting
+  Platform: :: \\
+  ByStar services are almost always realized inside of Virtual Machines
+  (VM). BISOS facilitates this with select choices of common mature
+  technologies including: kvm, virsh, vagrant and basebox. BISOS
+  services are reproducible through a collection of BPOs and are
+  transferable and disposable.
+
+  On top of Raw-BISOS, you produce your VM Hosting Platform.
+
+- ByStar-Rims-Site --- Setting Up Your Own 'Rims' Environment: :: \\
+  With a VM Hosting Platform in place you are ready to construct your
+  own ByStar site as an autonomous Rims environment. Several
+  foundational services in the Rims Environment will be created, these
+  include:
+
+  - A Gitlab BPO Server --- for private BPO realization
+
+  - ByStar Registrars --- for assignment of unique names and numbers in
+    your Rims Environment
+
+  - A Site Manager Console --- for providing visibility to your Rims
+    services and applications
+
+  With these foundational services in place, you can then add various
+  Rims services and applications. Entertainment centers, security
+  cameras, etc.
+
+  With your Rims Environment in place, you can now manage the needed
+  BPOs for accessing ByStar internet services.
+
+- PALS-Self-Hosting: :: \\
+  With your own Rims Environment in place you are ready to self-host
+  your PALS services if you wish.
+
+- Sited-Blee-Environment: :: \\
+  With your own Rims Environment in place you are ready to configure
+  your Usage Environment to match your ByStar internet services.
+
+Based on this layering, you can now decide on which layers you wish to
+deploy. Once Raw-BISOS and Raw-Blee have been deployed, you can deploy
+and manage the remaining layers through Blee-Panels.
+
+** Hardware Layer --- Resource Assumption
+   :PROPERTIES:
+   :CUSTOM_ID: hardware-layer-resource-assumption
+   :END:
+
+In order to construct a ByStar Virtual Machine Hosting Platform and
+setup your own Rims environment, you need one or more server grade
+computers. A typical 16 core computer with 16GB of memory and 1TB disk
+is recommended.
+
+You can also deploy BISOS without any explicit hardware in the cloud
+based on the availability of a Debian image.
+
+Hardware requirements for Usage Environment can be met by typical modern
+laptops.
+
+** Universal Fresh-Debian Layer
+   :PROPERTIES:
+   :CUSTOM_ID: universal-fresh-debian-layer
+   :END:
+
+Current release of BISOS assumes availability of Debian 12.
+
+A Fresh-Debian is an installation of Debian without any additional
+configurations. Raw-BISOS builds on a Fresh-Debian.
+
+You can obtain the appropriate Debian 12 image from:\\
+[[https://www.debian.org/releases/bookworm/debian-installer/]].
+
+Debian 12 comes with Python 3.11 and Emacs 28. Blee requires Emacs 28 or
+higher.
+
+** Creating Raw-BISOS (and Raw-Blee) --- From Fresh-Debian
+   :PROPERTIES:
+   :CUSTOM_ID: creating-raw-bisos-and-raw-blee-from-fresh-debian
+   :END:
+
+In
+Section [[#sec:BootstrappingRaw-BISOSFromFresh-Debian][[sec:BootstrappingRaw-BISOSFromFresh-Debian]]]
+--- , we described the common procedure using =./raw-bisos.sh=.
+
+Installation of Raw-BISOS and Raw-Blee on top of raw Debian-12 can be
+accomplished in other ways as well.
+
+If you already have a Rims Environment in place, you can install
+Raw-BISOS on a new physical machine using =unsitedBisosDeploy.sh= or
+=sysCharDeploy.sh=.
+
+In an existing Rims Environment, you can also create new raw-BISOS VM
+images based on Debian-12 base-boxes or use existing raw-BISOS base
+boxes using =sysCharDeploy.sh=.
+
+*** What raw-bisos.sh Does
+    :PROPERTIES:
+    :CUSTOM_ID: what-raw-bisos.sh-does
+    :END:
+
+ [sec:Whatraw-bisos.shDoes]
+
+The process of installing raw-bisos.sh starts by obtaining the
+raw-bisos.sh bash script.
+
+wget https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh
+
+raw-bisos.sh is a self-contained bash-ICM (Interactive Command Module).
+The primary entry point to raw-bisos.sh is the vis_installUnsitedBisos
+function.
+
+First the current user is added to the /etc/sudoers file without a
+requirement for a password.
+
+#+BEGIN_SRC sh
+  local curUser=$(id -u -n)
+
+  ANT_raw "About to add ${curUser} to /etc/sudoers -- You will be prompted for root passwd."
+  su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+#+END_SRC
+
+At this point, access to the system should be well restricted. We will
+re-adjust the sudoers file and remove the added line at the end of the
+installation process. Where appropriate the installation scripts use
+sudo to accomplish privileged tasks.
+
+Next we install pipx as a Debian package.
+
+sudo apt-get install pipx
+
+Using pipx we then install the bisos.provision pip package from PyPI.
+
+pipx install bisos.provision
+
+bisos.provision is actually a set of bash scripts. We have not switched
+to our python environment yet. The bisos.provision pip package installs
+the provisionBisos.sh script. provisionBisos.sh is a stand-alone
+bash-ICM module. The provisionBisos.sh script and its
+seedIcmStandalone.bash are at:\\
+[[https://github.com/bisos-pip/provision/tree/master/py3/bin]]
+
+We then invoke the sysBasePlatform command of the locally installed
+provisionBisos.sh
+
+$HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform
+
+Which installs git, configures git and clones the
+[[https://github.com/bxGenesis/provisioners]] repo in
+/opt/bisosProvisioner/gitRepos/provisioners.
+
+A set of self-reliant bash-ICM modules are then used to create the final
+/bisos environment. Once the /bisos/core/bsip/bin environment is in
+place, all bash ICM scripts use the bisos bash-ICM modules. During the
+installation, our use of ICM modules evolves from stand-alone
+(raw-bisos.sh) to self-contained (provisionBisos.sh) to self-reliant
+(/opt/bisosProvisioner/gitRepos/provisioners) to bisos bash-ICMs
+(/bisos/core/bsip/bin).
+
+Upon completion of the installation process, Raw-BISOS is capable of
+functioning as a BPO-Container, but no BPOs have been activated yet.
+
+*** Logging in as bystar
+    :PROPERTIES:
+    :CUSTOM_ID: logging-in-as-bystar
+    :END:
+
+Deployment of Raw-BISOS involves creation of a default login account
+called: bystar. You can now login to your system as bystar. On the Gnome
+GUI console select the bystar account.
+
+Or you can ssh into your system.
+
+ssh -X bystar@ipAddr
+
+The bystar account is preconfigured for BISOS services and capabilities.
+
+While you can use the traditional bash command line, the primary
+interface to use and to configure BISOS is Blee.
+
+*** Using Blee
+    :PROPERTIES:
+    :CUSTOM_ID: using-blee
+    :END:
+
+Deployment of Raw-BISOS involves creation of a full featured emacs
+environment which is fully integrated with BISOS, called Blee.
+
+blee -i run
+
+If you are familiar with Emacs, you will feel very much at home with
+Blee. You can think of Blee as a redistribution of Emacs which is fully
+BISOS aware. Most BISOS capabilities and services have been integrated
+into Blee. You can use ByStar services through Blee. Additionally, BISOS
+capabilities can be configured through Blee. Furthermore, BISOS is
+developed with Blee and you can think of Blee as the native BISOS IDE
+(Interactive Development Environment).
+
+Blee menu bar is a superset of Emacs menu bar. Most BISOS capabilities
+and services can be accessed through Blee menus. Additionally, Blee
+introduces a new user interface, called Blee-Panels.
+
+*** Use of Blee-Panels for BISOS Configuration and Information
+    :PROPERTIES:
+    :CUSTOM_ID: use-of-blee-panels-for-bisos-configuration-and-information
+    :END:
+
+Blee-Panels are a web of active org-mode pages that provide access to
+BISOS information, capabilities and services. Some Blee-Panels function
+as the equivalent of Unix Man Pages, which are active. There are many
+similarities between collection of Blee-Panels and the likes of Jupiter
+Notebook.
+
+Collection of purposeful Blee-Panels can be accessed through augmented
+Blee menus.
+
+** BISOS-Service-Platform --- VM Hosting
+   :PROPERTIES:
+   :CUSTOM_ID: bisos-service-platform-vm-hosting
+   :END:
+
+You can further provision your Raw-BISOS system to become a
+ByStar-Service-Platform. You can initiate the provisioning process with
+the =bisos-core/bootstrap/provisionSelections/kvmHosting= Blee-Panel.
+
+kvm, virsh, vagrant and basebox software packages will be installed.
+
+With your ByStar-Service-Platform in place you can now create additional
+Raw-BISOS system as Virtual Machines (VM) or materialize existing
+pre-configured systems through their BPOs.
+
+** ByStar-Rims-Site
+   :PROPERTIES:
+   :CUSTOM_ID: bystar-rims-site
+   :END:
+
+You can further provision your ByStar-Service-Platform system to
+construct a ByStar-Rims-Site. You can initiate the provisioning process
+with the =bisos-core/bootstrap/siteGenesis= Blee-Panel.
+
+A minimal ByStar-Rims-Site includes:
+
+- Gitlab-BPO-Server: :: \\
+  for private BPO realization
+
+- BISOS-Rims-Registrars: :: \\
+  for assignment of unique names and numbers in your Rims Environment.
+
+- Site-Manager-Console: :: \\
+  for providing visibility to your Rims services and applications.
+
+With these foundational services in place, you can then add various Rims
+services and applications. Entertainment centers, security cameras, etc.
+
+With your Rims Environment in place, you can now manage the needed BPOs
+for accessing ByStar internet services.
+
+** PALS-Self-Hosting in the Exposed Rim
+   :PROPERTIES:
+   :CUSTOM_ID: pals-self-hosting-in-the-exposed-rim
+   :END:
+
+With your own ByStar-Rims-Site in place you are now ready to self-host
+your PALS services if you wish. This allows you assert your tangible
+autonomy and privacy on your email and content publication services.
+
+** Sited-Blee-Environment
+   :PROPERTIES:
+   :CUSTOM_ID: sited-blee-environment
+   :END:
+
+With your own ByStar-Rims-Site in place you are now ready to realize
+your BPOs for the purpose of configuring your Usage Environment and for
+pairing of BISOS+Blee With ByStar Services and Abstracted Application
+Services (AAS).
+
+* BISOS Software Bill Of Materials --- BISOS-SBOM
+  :PROPERTIES:
+  :CUSTOM_ID: bisos-software-bill-of-materials-bisos-sbom
+  :END:
+
+BISOS Software can be categorized in two types.
+
+- Native BISOS Software: :: \\
+  Software that we have developed.
+
+- Adopted BISOS Software: :: \\
+  Software that we have adopted.
+
+BISOS Software can be thought of a collection of software packages of
+different forms and of different origins. For each type of software, in
+this section we provide an overview and identify their origins.
+
+** BISOS Native Software
+   :PROPERTIES:
+   :CUSTOM_ID: bisos-native-software
+   :END:
+
+All BISOS native software is publicly available and is Libre-Halaal
+software --- subjected to Affero GPL.
+
+We use Github and PyPi as public repositories. BISOS native software is
+structured as a set of repositories across a number of github
+organizations. Here, we provide an overview of these organizations and
+repositories.
+
+- PyPi bisos. namespace: :: \\
+  Some BISOS native software is released as pip packages. Some pip
+  packages are not python modules and are in the form of bash-ICM
+  scripts which allows for their convenient installation through pipx
+  during bootstraping and prior to establishment of /bisos bases. All
+  BISOS native pip packages are under the bisos namespace. T
+
+- Github Organization --- [[https://github.com/bisos-pip]]: :: \\
+  The complete sources for PyPi bisos pip packages are are maintained in
+  repositories of this github organization.
+
+- Github Organization --- [[https://github.com/bisos]]: :: \\
+  Various directories under /bisos map to repositories of this github
+  organization.
+
+- Github Organization --- [[https://github.com/bxGenesis]]: :: \\
+  The =start= repository and =provisioners= repository of =bxGenesis=
+  organization are used for initial bootstraping of Raw-BISOS.
+
+- Github Organization --- [[https://github.com/bxplpc]]: :: \\
+  Some final form ByStar and BISOS documents are maintained as
+  repositories of bxplpc organization.
+
+- Github Organization --- [[https://github.com/bx-blee]]: :: \\
+  Some Emacs library packages are maintained as repositories of bx-blee
+  organization.
+
+- Github Organization --- [[https://github.com/blee-pip]]: :: \\
+  The complete sources for PyPi blee pip packages are are maintained in
+  repositories of this github organization.
+
+- Github Organization --- [[https://github.com/blee-binders]]: :: \\
+  Collection of Blee-Panels (as org-mode files ) are maintained in
+  repositories of this organization.
+
+For details of which BISOS native packages are installed, follow
+=raw-bisos.sh=.
+
+** BISOS Adopted Software
+   :PROPERTIES:
+   :CUSTOM_ID: bisos-adopted-software
+   :END:
+
+BISOS adopts many software packages from many repository sources.
+
+These software packages have different copyright licenses but all the
+copyright license of these packages qualify as open-source. This means
+that all of BISOS can be reproduced from their source code.
+
+For each type of packaging (debian-apt, pip, emacs-library, npm) BISOS
+adopted software is retrieved from its primary repository.
+
+Here, we provide an overview.
+
+- Debian apt packages: :: \\
+  Debian apt packages are installed directly from
+  http://deb.debian.org/debian.
+
+- PyPi Python pip Packages: :: \\
+  Python pip packages are installed directly from pypi.org.
+
+- NPM JavaScript Packages: :: \\
+  JavaScript npm packages are installed directly from npmjs.org.
+
+- Emacs Library Packages: :: \\
+  Blee uses =straight.el= to manage emacs packages and pins them at
+  specific versions from elpa.gnu.org and melpa.org.
+
+- Miscellaneous Secondary Debian apt packages: :: \\
+  A few Debian apt packages are installed from repositories outside of
+  debian.org.
+
+- Miscellaneous Github packages: :: \\
+  A few packages are installed directly from github repositories.
+
+For details of which BISOS adopted packages are installed, follow
+=raw-bisos.sh=.
+
+* An Overview of BISOS Directories and Accounts
+  :PROPERTIES:
+  :CUSTOM_ID: an-overview-of-bisos-directories-and-accounts
+  :END:
+
+BISOS is an over Debian layer and follows its own policies for accounts,
+directories and other aspects of Debian.
+
+Here we provide an overview of directories and accounts.
+
+** BISOS Accounts and Groups
+   :PROPERTIES:
+   :CUSTOM_ID: bisos-accounts-and-groups
+   :END:
+
+Initial installation of Raw-BISOS results in creation of a number of
+accounts and groups on your system. These are:
+
+- bisos: :: \\
+  A non-login account belonging to group bisos. Many BISOS files and
+  directories belong to this user.
+
+- bystar: :: \\
+  A login account that is by default used.
+
+- bxisoDelimiter: :: \\
+  An used non-login account with the uid of 1000000. Based on their
+  numerical uid, all BPOs on this system will be sequentially created
+  after the bxisoDelimiter account.
+
+** BISOS Directories
+   :PROPERTIES:
+   :CUSTOM_ID: bisos-directories
+   :END:
+
+Initial installation of Raw-BISOS results in creation of a number of
+root directories on your system. These are:
+
+- /bisos: :: \\
+  All of native BISOS software and information resides under the /bisos
+  directory.
+
+- /bxo: :: \\
+  BPOs are realized and activated as BISOS accounts. Home directory of
+  these accounts reside under the /bxo directory.
+
+- /de: :: \\
+  Information related to other digital ecosystems reside under the /de
+  directory.
+
+A brief overview of the /bisos directory follows.
+
+- /bisos/git: :: \\
+  When git repositories are cloned, they are stored under this
+  directory. All native git repositories are cloned under the
+  /bisos/git/bxRepos repository.
+
+- /bisos/venv: :: \\
+  A number of Python Virtual Environments are created and maintained
+  under /bisos/venv/py3. These support development and reliable adoption
+  of python packages.
+
+- /bisos/pipx: :: \\
+  A number of Python pip packages are installed under /bisos/pipx using
+  pipx.
+
+- /bisos/blee: :: \\
+  Emacs related libraries and native blee elisp code is maintainer here.
+
+- /bisos/core: :: \\
+  Bash and Python scripts of BISOS are maintainer here.
+
+* Current State and Status of BISOS and ByStar
+  :PROPERTIES:
+  :CUSTOM_ID: current-state-and-status-of-bisos-and-bystar
+  :END:
+
+Our general strategy has been to:
+
+#+BEGIN_QUOTE
+  Think Big, Start Small, Never Give Up
+#+END_QUOTE
+
+As described in the previous 3 chapters, the overall architecture and
+design of the ByStar digital ecosystem and BISOS are now well in place.
+We have been gradually implementing key building blocks of ByStar and
+refining design of BISOS based on our implementation experiences. We
+have been at this for along while and what is in place is no longer all
+that small. However, we have chosen not to publicly release many of our
+services and accept the burden of a significant user base.
+
+ByStar is a perpetual work in progress. Enough is functional for us to
+expose certain parts. A starting point is now in place.
+
+Thus far ByStar has been developed by a very small team. The primary
+author of this book is also the primary designer and implementer of most
+of the ByStar integration.
+
+Our implementation focus has been on the fundamentals of ByStar,
+Possession Assertable Libre Services (PALS) and ByStar's unified
+development, management and usage environment Blee (ByStar Libre-Halaal
+Emacs Environment).
+
+** Current Status of Possession Assertable Libre Services
+   :PROPERTIES:
+   :CUSTOM_ID: current-status-of-possession-assertable-libre-services
+   :END:
+
+The general structure of PALS (Possession Assertable Libre Services) is
+in place and our primary focus has been two fundamental autonomy and
+privacy oriented services.
+
+1. Private Email Services
+
+2. Autonomous Content Publication
+
+These are now in place and are available for general use. You can
+self-host your autonomous and private ByStar email service. And you can
+self-host your autonomous and private ByStar content publication and web
+presence.
+
+** Current Status of the Usage Environment --- Blee
+   :PROPERTIES:
+   :CUSTOM_ID: current-status-of-the-usage-environment-blee
+   :END:
+
+Blee (ByStar Libre-Halaal Emacs Environment) is more than the typical
+usage environment. Blee is also a complete IDE (Interactive Development
+Environment), and includes integrated systems deployment and management
+features.
+
+At this time, Blee can not be considered end-user oriented --- it is
+engineer oriented. Anyone familiar with Emacs, will immediately enjoy
+the fully integrated environment that Blee provides.
+
+ByStar services and capabilities are self documented through org-mode
+based Blee panels. Blee panels are active and function as a layer on top
+of command line.
+
+* Participating in BISOS and Blee Development
+  :PROPERTIES:
+  :CUSTOM_ID: participating-in-bisos-and-blee-development
+  :END:
+
+We encourage and facilitate collaborative development of BISOS and Blee.
+
+For Python, Bash, Elisp and LaTeX we use a combination of org-mode and
+the native language mode of Blee/Emacs. We call this COMEEGA ---
+Collaborative Org-Mode Enhanced Emacs Generalized Authorship. COMEEGA is
+a Blee concept and an Emacs package for enhancing readability and
+usability of various authorship-major-modes with augmentation by
+org-mode content. For additional information about COMEEGA, see:\\
+[[https://github.com/bx-blee/comeega]]
+
+Those wishing to participate in BISOS and Blee development, should use
+COMEEGA.

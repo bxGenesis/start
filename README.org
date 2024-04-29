@@ -18,7 +18,7 @@ Polyexistentials*" book for the bigger picture of how all of ByStar fits togethe
 
 ------------------------------------------------------------------------
 
-#+html: <p align="right"><img src="images/frontCover-1.jpg" height="170" /></p>
+#+html: <img align="right" src="images/frontCover-1.jpg" height="170" />
 #+html: <p align="center"><font size="+4"><b>Nature of Polyexistentials:</font></b></p>
 #+html: <p align="center"><b>Basis for Abolishment of the Western Intellectual Property Rights Regime</b></p>
 #+html: <p align="center"><b>And Introduction of the Libre-Halaal ByStar Digital Ecosystem</b></p>

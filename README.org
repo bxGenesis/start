@@ -19,6 +19,7 @@ Polyexistentials*" book for the bigger picture of how all of ByStar fits togethe
 ------------------------------------------------------------------------
 
 #+html: <img align="right" src="images/frontCover-1.jpg" height="200" />
+
 #+html: <p align="center"><font size="+4"><b>Nature of Polyexistentials:</font></b></p>
 #+html: <p align="center"><b>Basis for Abolishment of the Western Intellectual Property Rights Regime</b></p>
 #+html: <p align="center"><b>And Introduction of the Libre-Halaal ByStar Digital Ecosystem</b></p>
@@ -104,6 +105,9 @@ In the following sections, we guide you through that process.
 
 Basic design of BISOS is layered. Any BISOS layer can be useful for a
 particular purpose. These layers build on each other.
+
+#+html: <img align="center" src="images/provisioning.png">
+
 
 Figure [[#fig:provisioning][[fig:provisioning]]], depicts how these
 layers are deployed. The layers on left are service oriented. The layers

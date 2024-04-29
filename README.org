@@ -3,45 +3,39 @@
 #+AUTHOR: Mohsen BANAN
 #+OPTIONS: toc:4
 
-The *Libre-Halaal ByStar Digital Ecosystem* (/By* DE/) is an interdisciplinary,
-and ethics-oriented non-proprietary digital ecosystem which challenges the
-existing proprietary American digital ecosystem while operating concurrently
-alongside it. On a global scale, By* provide Internet Application Services which
-preserve autonomy and privacy of the individual. *BISOS*: (/By* Internet
-Services Operating System/) is a unified and universal framework for developing
-both internet services and software-service continuums that use internet
-services. BISOS is a layer on top of Debian. *Blee*: (/BISOS Libre-Halaal Emacs
-Environment/) is a layer on top of Emacs and BISOS, which creates a
-comprehensive integrated usage and development environment. Blee and BISOS are
-fully integrated.
-See the "*Nature of Polyexistentials*" book available on line at: [[https://github.com/bxplpc/120033][PLPC-120033]]
- for the bigger picture of how all of these fall in a bigger picture.
+The *Libre-Halaal ByStar Digital Ecosystem* (/By* DE/) is an interdisciplinary, and
+ethics-oriented non-proprietary digital ecosystem which challenges the existing
+proprietary American digital ecosystem while operating concurrently alongside
+it. On a global scale, By* provide Internet Application Services which preserve
+autonomy and privacy of the individual. *BISOS*: (/By* Internet Services Operating
+System/) is a unified and universal framework for developing both internet
+services and software-service continuums that use internet services. BISOS is a
+layer on top of Debian. *Blee*: (/BISOS Libre-Halaal Emacs Environment/) is a layer
+on top of Emacs and BISOS, which creates a comprehensive integrated usage and
+development environment. Blee and BISOS are fully integrated. See the "*Nature of
+Polyexistentials*" book for the bigger picture of how all of ByStar fits together
+
+
+------------------------------------------------------------------------
+
+# #+html: <img align="right"  height="190" src="./images/frontCover-1.jpg">
+
+# #+html: <p align="center"><font size="+4"><b>Nature of Polyexistentials:</font></b></p>
+
+# #+html: <p align="center"><b>Basis for Abolishment of the Western Intellectual Property Rights Regime</b></p>
+
+# #+html: <p align="center"><b>And Introduction of the Libre-Halaal ByStar Digital Ecosystem</b></p>
+
+# #+html: <p> </p>
+
+# #+html: <p align="left">On Line: <a href="https://github.com/bxplpc/120033">PLPC-120033 at Github</a> --  <a href="https://doi.org/10.5281/zenodo.8003847">DOI </a> --- PDF: <a href="https://github.com/bxplpc/120033/blob/main/pdf/c-120033-1_05-book-8.5x11-col-emb-pub.pdf">8.5x11</a> -- <a href="https://github.com/bxplpc/120033/blob/main/pdf/c-120033-1_04-book-a4-col-emb-pub.pdf">A4</a> </p>
+
+# #+html: <p align="left">Order Book Prints At Amazon:<a href="https://www.amazon.com/dp/1960957015"> US </a> -- <a href="https://www.amazon.fr/dp/1960957015"> France </a>  -- <a href="https://www.amazon.co.uk/dp/1960957015"> UK </a> -- <a href="https://www.amazon.co.jp/dp/1960957015"> Japan </a> (424 pages --- 6 x 0.96 x 9 inches)</p>
+
+------------------------------------------------------------------------
 
 Here we provide needed instructions for you to start adopting ByStar by creating
 your own Raw-BISOS Platform and your own ByStar-Rims-Site.
-
-* From a Fresh-Debian-12 (or 11) to Unsited-BISOS
-
-Unsited-BISOS builds on a Fresh-Debian to provide a platform which can then be configured to become
-either a usage environment or a service platform.
-
-** Start By Installing Unsited-BISOS on a Fresh-Debian-12 (or 11)
-
-
-On a Fresly installed Debian system  as user intra (or vagrant), run:
-
-#+begin_src sh
-wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/unsited-bisos.sh | tee install-unsited-bisos.sh | bash
-#+end_src
-
-The downloaded script is saved in "./install-unsited-bisos.sh". You can inspect it
-    before running it for installation purposes. Feeding to bash has only
-    executed the display of a menu.
-
-Choose the last line of thatch, and run:
-#+begin_src sh
-./install-unsited-bisos.sh -h -v -n showRun -i installUnsitedBisos
-#+end_src
 
 
 * Bootstrapping Raw-BISOS From Fresh-Debian
@@ -58,24 +52,28 @@ performed.
 
 On a Freshly installed Debian system, run:
 
+#+begin_src sh
 wget -q -O -
 https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh |
 $\backslash$\\
 tee raw-bisos.sh | $\backslash$\\
 bash
+#+end_src
 
 The above command downloads the master installation script and feeds it
 to bash. Bash execution is limited to display of a menu.
 
 The downloaded script is saved in =./raw-bisos.sh=. You can inspect that
 script before running it for installation purposes.
-Section [[#sec:Whatraw-bisos.shDoes][[sec:Whatraw-bisos.shDoes]]] --- ,
+Section [[sec:Whatraw-bisos.shDoes]] --- ,
 describes what happens inside of =./raw-bisos.sh=.
 
 When you are ready, you can choose the last line of the menu that was
 displayed, and run:
 
+#+begin_src sh
 ./raw-bisos.sh -h -v -n showRun -i installUnsitedBisos
+#+end_src
 
 Respond to the prompts and be patient. Raw-BISOS installs a lot of deb,
 pip, npm, and emacs packages. Upon completion of the installation, you
@@ -85,9 +83,16 @@ your environments.
 In the following sections, we guide you through that process.
 
 
+# #+html: <p align="center"><img src="images/mtdtModel.jpg" /></p>.
+
+#+CAPTION: MTDT Model C-c C-x C-v (org-toggle-inline-images)
+#+NAME:   fig:images/mtdtModel.jpg]]
+#+ATTR_HTML: :width 1100px
+[[./images/mtdtModel.jpg]]
+
+
+
 * Table of Contents     :TOC:
-- [[#from-a-fresh-debian-12-or-11-to-unsited-bisos][From a Fresh-Debian-12 (or 11) to Unsited-BISOS]]
-  - [[#start-by-installing-unsited-bisos-on-a-fresh-debian-12-or-11][Start By Installing Unsited-BISOS on a Fresh-Debian-12 (or 11)]]
 - [[#bootstrapping-raw-bisos-from-fresh-debian][Bootstrapping Raw-BISOS From Fresh-Debian]]
 - [[#deploying-bisos-and-bystar-----layer-by-layer][Deploying BISOS and ByStar --- Layer by Layer]]
   - [[#hardware-layer-----resource-assumption][Hardware Layer --- Resource Assumption]]
@@ -237,7 +242,7 @@ boxes using =sysCharDeploy.sh=.
     :CUSTOM_ID: what-raw-bisos.sh-does
     :END:
 
- [sec:Whatraw-bisos.shDoes]
+<<sec:Whatraw-bisos.shDoes>>
 
 The process of installing raw-bisos.sh starts by obtaining the
 raw-bisos.sh bash script.

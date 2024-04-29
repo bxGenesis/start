@@ -18,8 +18,7 @@ Polyexistentials*" book for the bigger picture of how all of ByStar fits togethe
 
 ------------------------------------------------------------------------
 
-#+html: <p align="center" height="190"><img src="images/frontCover-1.jpg" /></p>
-
+#+html: <p align="center"><img src="images/frontCover-1.jpg" height="190" /></p>
 
 ------------------------------------------------------------------------
 

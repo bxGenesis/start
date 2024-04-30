@@ -109,18 +109,16 @@ particular purpose. These layers build on each other.
 #+html: <img align="center" src="images/provisioning.png">
 
 
-Figure [[#fig:provisioning][[fig:provisioning]]], depicts how these
+The Figure above, depicts how these
 layers are deployed. The layers on left are service oriented. The layers
 on the right are usage oriented.
-
-[[/lcnt/lgpc/bystar/permanent/common/figures/provisioning.pdf]]
 
 Some BISOS layers can be used outside of the ByStar context. Here we
 introduce 5 specific layers, based on intent of usage.
 
 A brief description of each layer follows.
 
-- Raw-BISOS and Raw-Blee: :: \\
+- Raw-BISOS and Raw-Blee: ::
   BISOS and Blee can be considered in two parts, the software of BISOS
   and Blee and customization of BISOS and Blee, for use in particular
   site, with particular application by particular users. We refer to the
@@ -130,8 +128,8 @@ A brief description of each layer follows.
   Raw-BISOS and Raw-Blee can be used outside of the ByStar context for
   various purposes.
 
-- BISOS-Service-Platform --- BISOS as a Virtual Machine Hosting
-  Platform: :: \\
+- BISOS-Service-Platform --- BISOS as a Virtual Machine Hosting Platform: ::
+
   ByStar services are almost always realized inside of Virtual Machines
   (VM). BISOS facilitates this with select choices of common mature
   technologies including: kvm, virsh, vagrant and basebox. BISOS
@@ -140,7 +138,7 @@ A brief description of each layer follows.
 
   On top of Raw-BISOS, you produce your VM Hosting Platform.
 
-- ByStar-Rims-Site --- Setting Up Your Own 'Rims' Environment: :: \\
+- ByStar-Rims-Site --- Setting Up Your Own 'Rims' Environment: ::
   With a VM Hosting Platform in place you are ready to construct your
   own ByStar site as an autonomous Rims environment. Several
   foundational services in the Rims Environment will be created, these
@@ -161,7 +159,7 @@ A brief description of each layer follows.
   With your Rims Environment in place, you can now manage the needed
   BPOs for accessing ByStar internet services.
 
-- PALS-Self-Hosting: :: \\
+- PALS-Self-Hosting: ::
   With your own Rims Environment in place you are ready to self-host
   your PALS services if you wish.
 

@@ -163,7 +163,7 @@ A brief description of each layer follows.
   With your own Rims Environment in place you are ready to self-host
   your PALS services if you wish.
 
-- Sited-Blee-Environment: :: \\
+- Sited-Blee-Environment: ::
   With your own Rims Environment in place you are ready to configure
   your Usage Environment to match your ByStar internet services.
 
@@ -208,9 +208,7 @@ higher.
    :CUSTOM_ID: creating-raw-bisos-and-raw-blee-from-fresh-debian
    :END:
 
-In
-Section [[#sec:BootstrappingRaw-BISOSFromFresh-Debian][[sec:BootstrappingRaw-BISOSFromFresh-Debian]]]
---- , we described the common procedure using =./raw-bisos.sh=.
+Previously we described the common procedure using =./raw-bisos.sh=.
 
 Installation of Raw-BISOS and Raw-Blee on top of raw Debian-12 can be
 accomplished in other ways as well.
@@ -228,12 +226,13 @@ boxes using =sysCharDeploy.sh=.
     :CUSTOM_ID: what-raw-bisos.sh-does
     :END:
 
-<<sec:Whatraw-bisos.shDoes>>
 
 The process of installing raw-bisos.sh starts by obtaining the
 raw-bisos.sh bash script.
 
+#+begin_src sh
 wget https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh
+#+end_src
 
 raw-bisos.sh is a self-contained bash-ICM (Interactive Command Module).
 The primary entry point to raw-bisos.sh is the vis_installUnsitedBisos
@@ -256,11 +255,15 @@ sudo to accomplish privileged tasks.
 
 Next we install pipx as a Debian package.
 
+#+begin_src sh
 sudo apt-get install pipx
+#+end_src
 
 Using pipx we then install the bisos.provision pip package from PyPI.
 
+#+begin_src sh
 pipx install bisos.provision
+#+end_src
 
 bisos.provision is actually a set of bash scripts. We have not switched
 to our python environment yet. The bisos.provision pip package installs
@@ -272,7 +275,9 @@ seedIcmStandalone.bash are at:\\
 We then invoke the sysBasePlatform command of the locally installed
 provisionBisos.sh
 
+#+begin_src sh
 $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform
+#+end_src
 
 Which installs git, configures git and clones the
 [[https://github.com/bxGenesis/provisioners]] repo in
@@ -300,7 +305,9 @@ GUI console select the bystar account.
 
 Or you can ssh into your system.
 
+#+begin_src sh
 ssh -X bystar@ipAddr
+#+end_src
 
 The bystar account is preconfigured for BISOS services and capabilities.
 
@@ -315,7 +322,9 @@ interface to use and to configure BISOS is Blee.
 Deployment of Raw-BISOS involves creation of a full featured emacs
 environment which is fully integrated with BISOS, called Blee.
 
+#+begin_src sh
 blee -i run
+#+end_src
 
 If you are familiar with Emacs, you will feel very much at home with
 Blee. You can think of Blee as a redistribution of Emacs which is fully

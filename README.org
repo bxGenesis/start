@@ -93,6 +93,7 @@ In the following sections, we guide you through that process.
 - [[#an-overview-of-bisos-directories-and-accounts][An Overview of BISOS Directories and Accounts]]
   - [[#bisos-accounts-and-groups][BISOS Accounts and Groups]]
   - [[#bisos-directories][BISOS Directories]]
+- [[#bisos-development-frameworks][BISOS Development Frameworks]]
 - [[#current-state-and-status-of-bisos-and-bystar][Current State and Status of BISOS and ByStar]]
   - [[#current-status-of-possession-assertable-libre-services][Current Status of Possession Assertable Libre Services]]
   - [[#current-status-of-the-usage-environment-----blee][Current Status of the Usage Environment --- Blee]]
@@ -591,6 +592,74 @@ A brief overview of the /bisos directory follows.
 
 - /bisos/core: :: \\
   Bash and Python scripts of BISOS are maintainer here.
+
+* BISOS Development Frameworks
+  :PROPERTIES:
+  :CUSTOM_ID: bisos-development-frameworks
+  :END:
+
+The ByStar digital ecosystem employs the BISOS platform, comprised of
+various development frameworks utilized for the creation of
+applications, services, and software-service continuums.
+
+BISOS platform's development frameworks are language-specific and
+domain-specific but are consistent and integrated. The BISOS development
+frameworks encompass:
+
+- PyCS --- Python Command Services: :: \\
+  BISOS uses the PyCS development framework for configuring and
+  integrating related software packages to create consistent services,
+  applications, and software-service continuums. Numerous Python command
+  scripts, employing the PyCS framework, collaborate to integrate
+  selected software packages towards the implementation of applications
+  and services. Additionally, the PyCS framework supports the
+  development of Remote Operations (RO) --- using RPyC, which are
+  equivalents of traditional web services and microservices.
+
+  Section "PyCS: BISOS's Integration Framework", provides an overview of PyCS.
+
+  Python virtual environment of PyCS is at file:/bisos/venv/py3/bisos3. Many
+  PyCS scripts are housed in file:/bisos/core/bpip/bin/.
+
+- ICM --- Bash Interactive Command Modules: :: \\
+  BISOS employs ICM development framework for configuration and
+  integration of related software packages towards their integration.
+
+  ICM is a script-oriented, Bash-based development environment similar
+  to PyCS. ICMs require minimal external support and self-contained and
+  stand-alone ICMs are used for bootstraping BISOS.
+
+  BISOS ICMs primarily reside in file:/bisos/core/bsip/bin/.
+
+- Blee Libraries: :: \\
+  Blee libraries are a set of Emacs Lisp (elisp) libraries that provide
+  for a framework for development of Blee applications.
+
+  Section [[#sec:ByStarLibre-HalaalEmacsuserEnvironment(Blee)][[sec:ByStarLibre-HalaalEmacsuserEnvironment(Blee)]]]
+  --- , provides an overview of Blee.
+
+  Within the BISOS platform, Blee libraries reside in file:/bisos/blee/env3/.
+
+- LCNT --- Libre Content Development and Publication: :: \\
+  LCNT offers a LaTeX-based environment tailored for the creation of
+  multimedia content, spanning across various formats such as books,
+  articles, websites, videos, and more. The LCNT framework encompasses
+  content generation, autonomous publication, and content syndication.
+  This book was developed and published using the LCNT framework.
+
+  Section [sec:BISOSContentGenerationandSelf-Publication] --- , provides
+  an overview of LCNT.
+
+  Within the BISOS platform, LCNT facilities reside in
+  /bisos/core/lcnt/bin/.
+
+These four frameworks are aware of each other and are consistent and
+integrated.
+
+All of these frameworks and their languages --- Python, Bash, elisp, and
+LaTeX --- are developed in a flavor called COMEEGA.
+Section [[#sec:CollaborativeOrg-ModeEnhancedEmacsGeneralizedAuthorship(COMEEGA)][[sec:CollaborativeOrg-ModeEnhancedEmacsGeneralizedAuthorship(COMEEGA)]]]
+--- provides an overview of COMEEGA.
 
 * Current State and Status of BISOS and ByStar
   :PROPERTIES:

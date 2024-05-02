@@ -1,6 +1,8 @@
 #!/bin/bash
 
-localName="install-unsited-bisos"
+#! /bin/bash
+#
+localName="raw-bisos"   # previously install-unsited-bisos
 dateTag=$( date +%y%m%d%H%M%S )
 logFile=~/${localName}-${dateTag}-log.org
 

@@ -68,10 +68,12 @@ displayed, and run:
 ./raw-bisos.sh -h -v -n showRun -i installUnsitedBisos
 #+end_src
 
-Respond to the prompts and be patient. Raw-BISOS installs a lot of deb,
-pip, npm, and emacs packages. Upon completion of the installation, you
-can log into your Raw-BISOS and install additional layers and customize
-your environments.
+Respond to the prompts and be patient. Raw-BISOS installs a lot of deb, Python
+pip, JavaScript npm, and emacs elisp packages. Upon completion of the
+installation, you can log into your Raw-BISOS and install additional layers and
+customize your environments. A log of the installation is kept in a file named
+./raw-bisos-dateTag-log.org --- dateTag reflects the start time and the log
+file is in org-mode format.
 
 In the following sections, we guide you through that process.
 
@@ -103,6 +105,9 @@ In the following sections, we guide you through that process.
   :PROPERTIES:
   :CUSTOM_ID: deploying-bisos-and-bystar-layer-by-layer
   :END:
+
+  [ The following text is aligned with Chapter 18, --- Engineering Adoption of
+  BISOS and ByStar --- of "Nature of Polyexistentials" ]
 
 Basic design of BISOS is layered. Any BISOS layer can be useful for a
 particular purpose. These layers build on each other.
@@ -618,8 +623,8 @@ frameworks encompass:
 
   Section "PyCS: BISOS's Integration Framework", provides an overview of PyCS.
 
-  Python virtual environment of PyCS is at file:/bisos/venv/py3/bisos3. Many
-  PyCS scripts are housed in file:/bisos/core/bpip/bin/.
+  Python virtual environment of PyCS is at /bisos/venv/py3/bisos3/. Many
+  PyCS scripts are housed in /bisos/core/bpip/bin/.
 
 - ICM --- Bash Interactive Command Modules: :: \\
   BISOS employs ICM development framework for configuration and
@@ -629,16 +634,15 @@ frameworks encompass:
   to PyCS. ICMs require minimal external support and self-contained and
   stand-alone ICMs are used for bootstraping BISOS.
 
-  BISOS ICMs primarily reside in file:/bisos/core/bsip/bin/.
+  BISOS ICMs primarily reside in /bisos/core/bsip/bin/.
 
 - Blee Libraries: :: \\
   Blee libraries are a set of Emacs Lisp (elisp) libraries that provide
   for a framework for development of Blee applications.
 
-  Section [[#sec:ByStarLibre-HalaalEmacsuserEnvironment(Blee)][[sec:ByStarLibre-HalaalEmacsuserEnvironment(Blee)]]]
-  --- , provides an overview of Blee.
+  Section "ByStar Libre-Halaal Emacsu user Environment (Blee)" of the book, provides an overview of Blee.
 
-  Within the BISOS platform, Blee libraries reside in file:/bisos/blee/env3/.
+  Within the BISOS platform, Blee libraries reside in /bisos/blee/env3/.
 
 - LCNT --- Libre Content Development and Publication: :: \\
   LCNT offers a LaTeX-based environment tailored for the creation of
@@ -647,7 +651,7 @@ frameworks encompass:
   content generation, autonomous publication, and content syndication.
   This book was developed and published using the LCNT framework.
 
-  Section [sec:BISOSContentGenerationandSelf-Publication] --- , provides
+  Section "BISOS Content Generation and Self-Publication" of the book, provides
   an overview of LCNT.
 
   Within the BISOS platform, LCNT facilities reside in
@@ -658,8 +662,8 @@ integrated.
 
 All of these frameworks and their languages --- Python, Bash, elisp, and
 LaTeX --- are developed in a flavor called COMEEGA.
-Section [[#sec:CollaborativeOrg-ModeEnhancedEmacsGeneralizedAuthorship(COMEEGA)][[sec:CollaborativeOrg-ModeEnhancedEmacsGeneralizedAuthorship(COMEEGA)]]]
---- provides an overview of COMEEGA.
+Section "Collaborative Org-Mode Enhanced Emacs Generalized Authorship (COMEEGA)" of the book,
+provides an overview of COMEEGA.
 
 * Current State and Status of BISOS and ByStar
   :PROPERTIES:

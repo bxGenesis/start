@@ -115,7 +115,7 @@ In the following sections, we guide you through that process.
 Basic design of BISOS is layered. Any BISOS layer can be useful for a
 particular purpose. These layers build on each other.
 
-#+html: <img align="center" src="images/provisioning.png">
+#UsedToBE+html: <img align="center" src="images/provisioning.png">
 
 #+CAPTION: MTDT Model C-c C-x C-v (org-toggle-inline-images)
 #+NAME:   fig: images/provisioning.png

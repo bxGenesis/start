@@ -1,7 +1,6 @@
 #+TITLE: Bootstrapping ByStar, BISOS and Blee
 #+DATE: <2024-02-19 Mon 16:27>
 #+AUTHOR: Mohsen BANAN
-#+OPTIONS: toc:4
 
 The *Libre-Halaal ByStar Digital Ecosystem* (/By* DE/) is an interdisciplinary, and
 ethics-oriented non-proprietary digital ecosystem which challenges the existing
@@ -85,6 +84,10 @@ In the following sections, we guide you through that process.
   - [[#hardware-layer-----resource-assumption][Hardware Layer --- Resource Assumption]]
   - [[#universal-fresh-debian-layer][Universal Fresh-Debian Layer]]
   - [[#creating-raw-bisos-and-raw-blee-----from-fresh-debian][Creating Raw-BISOS (and Raw-Blee) --- From Fresh-Debian]]
+    - [[#what-raw-bisossh-does][What raw-bisos.sh Does]]
+    - [[#logging-in-as-bystar][Logging in as bystar]]
+    - [[#using-blee][Using Blee]]
+    - [[#use-of-blee-panels-for-bisos-configuration-and-information][Use of Blee-Panels for BISOS Configuration and Information]]
   - [[#bisos-service-platform-----vm-hosting][BISOS-Service-Platform --- VM Hosting]]
   - [[#bystar-rims-site][ByStar-Rims-Site]]
   - [[#pals-self-hosting-in-the-exposed-rim][PALS-Self-Hosting in the Exposed Rim]]
@@ -113,6 +116,12 @@ Basic design of BISOS is layered. Any BISOS layer can be useful for a
 particular purpose. These layers build on each other.
 
 #+html: <img align="center" src="images/provisioning.png">
+
+#+CAPTION: MTDT Model C-c C-x C-v (org-toggle-inline-images)
+#+NAME:   fig: images/provisioning.png
+#+ATTR_HTML: :width 1100px
+[[./images/provisioning.png]]
+
 
 
 The Figure above, depicts how these
@@ -749,3 +758,28 @@ org-mode content. For additional information about COMEEGA, see:\\
 
 Those wishing to participate in BISOS and Blee development, should use
 COMEEGA.
+
+
+# ###+BEGIN: blee:bxPanel:footerOrgParams
+#+STARTUP: overview
+#+STARTUP: lognotestate
+#+STARTUP: inlineimages
+#+SEQ_TODO: TODO WAITING DELEGATED | DONE DEFERRED CANCELLED
+#+TAGS: @desk(d) @home(h) @work(w) @withInternet(i) @road(r) call(c) errand(e)
+#+CATEGORY: N:mtdt-conceptAndDesign
+# ###+END
+# ###+BEGIN: blee:bxPanel:footerEmacsParams :primMode "org-mode"
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# eval: (setq-local ~selectedSubject "noSubject")
+# eval: (setq-local ~primaryMajorMode 'org-mode)
+# eval: (setq-local ~blee:panelUpdater nil)
+# eval: (setq-local ~blee:dblockEnabler nil)
+# eval: (setq-local ~blee:dblockController "interactive")
+# eval: (img-link-overlays)
+# eval: (set-fill-column 115)
+# eval: (blee:fill-column-indicator/enable)
+# eval: (bx:load-file:ifOneExists "./panelActions.el")
+# End:
+
+####+END

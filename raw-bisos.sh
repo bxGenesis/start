@@ -90,9 +90,11 @@ _EOF_
     EH_assert [[ $# -eq 0 ]]
 
     echo "We are about to install 'Unsited-Bisos'"
-    echo "The installation can take 25 minutes or so,"
-    echo "Please confirm this is what you want to do: "
-    _continueAfterThis
+    echo "The installation could take more than 25 minutes,"
+    if [ "${G_humanUser}" == "TRUE" ] ; then
+       echo "Please confirm this is what you want to do: "
+       _continueAfterThis
+    fi
 
     local curUser=$(id -u -n)
 
@@ -1022,8 +1024,8 @@ G_progName=$( basename ${0} )
 G_myName=${G_progName}
 G_myInvokedName=${0}
 
-#G_humanUser=FALSE
-G_humanUser=TRUE
+G_humanUser=FALSE
+# G_humanUser=TRUE
 
 # TM_trace 9 ${G_argsOrig}
 

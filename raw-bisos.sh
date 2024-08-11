@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #! /bin/bash
 #
 localName="raw-bisos"   # previously install-unsited-bisos
@@ -8,8 +6,8 @@ logFile=~/${localName}-${dateTag}-log.org
 
 exec &> >(tee "${logFile}")
 
-#set -v
-#set -x
+#set -v    # For Debugging - print shell input lines as they are read.
+#set -x    # For Debugging - print commands and their arguments as they are executed.
 set -u            # unset vars are an error
 #set -e            # exit if pipeline fails
 set -o pipefail   # return is that of rightmost
@@ -27,7 +25,8 @@ And then:
 ./install-unsited-bisos.sh -h -v -n showRun -i installUnsitedBisos
 
 The code and documentation for this script is at: https://github.com/bxGenesis/start
-This is Standalone-ICM script that starts with vis_installUnsitedBisos
+This is Standalone-ICM script that starts with vis_installUnsitedBisos.
+As a  Standalone-ICM, everything after vis_examples is boilerplate code.
 
 The equivalent of this script as a BISOS-ICM is /bisos/core/bsip/bin/unsitedBisosDeploy.sh
 _EOF_

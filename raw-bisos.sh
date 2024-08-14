@@ -105,8 +105,11 @@ _EOF_
       lpReturn
     fi
 
+    # With Vagrant (Guest) id is root and no passwd is required.
+    lpDo id
     ANT_raw "About to add ${curUser} to /etc/sudoers -- You will be prompted for root passwd."
     su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+    lpDo sudo tail -1 /etc/sudoers 
 
     ANT_raw "About to adjust /etc/apt/sources.list."
     lpDo sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.orig

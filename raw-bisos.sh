@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-localName="raw-bisos"   # previously install-unsited-bisos
+localName="raw-bisos"   # scripts name sans .sh
 dateTag=$( date +%y%m%d%H%M%S )
 logFile=~/${localName}-${dateTag}-log.org
 
@@ -19,13 +19,17 @@ function vis_moduleDescription {  cat  << _EOF_
 This script installs unsited-bisos on a fresh debian-11 or debian-12.
 
 On a fresh debian machine, the user typically runs:
-wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/unsited-bisos.sh | tee install-unsited-bisos.sh | bash
+wget -q -O - https://raw.githubusercontent.com/bxGenesis/start/main/raw-bisos.sh | tee raw-bisos.sh | bash
 
 And then:
-./install-unsited-bisos.sh -h -v -n showRun -i installUnsitedBisos
+./${localName}.sh -h -v -n showRun -i installUnsitedBisos
+or
+./${localName}.sh -v -n showRun -p debInstRootPasswd=intra -i installUnsitedBisos
+if you prefer not to be prompted and for non-interactive use.
 
 The code and documentation for this script is at: https://github.com/bxGenesis/start
 This is Standalone-ICM script that starts with vis_installUnsitedBisos.
+For debian access it uses terminology of debInstAcct and debInstRootPasswd and debInstAcctPasswd
 As a  Standalone-ICM, everything after vis_examples is boilerplate code.
 
 The equivalent of this script as a BISOS-ICM is /bisos/core/bsip/bin/unsitedBisosDeploy.sh
@@ -58,6 +62,9 @@ alias EH_retOnFail='errVal=$?; if [[ ${errVal} != 0 ]] ; then  printf  >&2 "EH_,
 alias retIfFail='errVal=$?; if [[ ${errVal} != 0 ]] ; then  printf  >&2 "retFail,${G_myName}::$FUNCNAME:$LINENO (ret=${errVal})"; return ${errVal}; fi'
 alias retIfSuccess='errVal=$?; if [[ ${errVal} == 0 ]] ; then  printf  >&2 "retSuccess,${G_myName}::$FUNCNAME:$LINENO (ret=${errVal})"; return ${errVal}; fi'
 
+
+typeset -t debInstRootPasswd=""
+
 function vis_deBisosIfy {
     G_funcEntry
     function describeF {  G_funcEntryShow; cat  << _EOF_
@@ -88,16 +95,19 @@ _EOF_
     }
     EH_assert [[ $# -eq 0 ]]
 
-    echo "We are about to install 'Unsited-Bisos'"
-    echo "The installation could take more than 25 minutes,"
+    echo "We are about to install Raw-BISOS ('Unsited-BISOS')"
+
     if [ "${G_humanUser}" == "TRUE" ] ; then
-       echo "Please confirm this is what you want to do: "
-       _continueAfterThis
+      echo "The installation could take more than 25 minutes,"
+      echo "Please confirm this is what you want to do: "
+      _continueAfterThis
+    else
+      echo "Be Patient: the installation could take more than 25 minutes."
     fi
 
-    local curUser=$(id -u -n)
+    local curUser=$(id -u -n)  # debInstUser
 
-    G_verbose="verbose"
+    G_verbose="verbose"  # In case they were not specified 
     G_runMode="showRun"
 
     if [ -d "/bisos" ] ; then
@@ -105,10 +115,21 @@ _EOF_
       lpReturn
     fi
 
-    # With Vagrant (Guest) id is root and no passwd is required.
     lpDo id
-    ANT_raw "About to add ${curUser} to /etc/sudoers -- You will be prompted for root passwd."
-    su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+
+    if [ "${curUser}" == "root" ] ; then
+      ANT_raw "About to add ${curUser} to /etc/sudoers -- user is root, With Vagrant (Guest) id is root and no passwd is required."
+      su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+    else
+      if [ -z "${debInstRootPasswd}" ] ; then
+        ANT_raw "About to add ${curUser} to /etc/sudoers -- You will be prompted for root passwd."
+        su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+      else
+        ANT_raw "About to add ${curUser} to /etc/sudoers -- Using Specified debInstRootPasswd."
+        echo "${debInstRootPasswd}" | su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+      fi
+    fi
+
     lpDo sudo tail -1 /etc/sudoers 
 
     ANT_raw "About to adjust /etc/apt/sources.list."
@@ -156,6 +177,8 @@ $( examplesSeperatorChapter "BISOS Provisioning:: DeBisosIfy for ReInstallation"
 ${G_myName} ${extraInfo} -i deBisosIfy
 $( examplesSeperatorChapter "BISOS Provisioning:: Standalone ICM Sets Up Selfcontained ICMs" )
 ${G_myName} ${extraInfo} -i installUnsitedBisos
+${G_myName} ${extraInfo} -p debInstRootPasswd=intra -i installUnsitedBisos
+${G_myName} -v -n showRun -p debInstRootPasswd=intra -i installUnsitedBisos # Non interactive usage
 _EOF_
 }
 

@@ -110,7 +110,7 @@ _EOF_
     G_verbose="verbose"  # In case they were not specified 
     G_runMode="showRun"
 
-    if [ -d "/bisos" ] ; then
+    if [ -d "/bisosNOT" ] ; then
       EH_problem "Unexpected /bisos -- Aborting"
       lpReturn
     fi
@@ -118,6 +118,10 @@ _EOF_
     lpDo id
 
     local sudoResult=$(sudo -l 2> /dev/null | grep 'NOPASSWD: ALL')
+
+    lpDo sudo -l
+
+    ANT_raw "sudoResult=${sudoResult}"
 
     if [ -z "${sudoResult}" ] ; then
       if [ "${curUser}" == "root" ] ; then
@@ -137,6 +141,8 @@ _EOF_
     fi
 
     lpDo sudo tail -1 /etc/sudoers 
+
+    lpReturn
 
     ANT_raw "About to adjust /etc/apt/sources.list."
     lpDo sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.orig

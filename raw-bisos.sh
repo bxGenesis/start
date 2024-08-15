@@ -117,17 +117,23 @@ _EOF_
 
     lpDo id
 
-    if [ "${curUser}" == "root" ] ; then
-      ANT_raw "About to add ${curUser} to /etc/sudoers -- user is root, With Vagrant (Guest) id is root and no passwd is required."
-      su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
-    else
-      if [ -z "${debInstRootPasswd}" ] ; then
-        ANT_raw "About to add ${curUser} to /etc/sudoers -- You will be prompted for root passwd."
-        su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+    local sudoResult=$(sudo -l 2> /dev/null | grep 'NOPASSWD: ALL')
+
+    if [ -z "${sudoResult}" ] ; then
+      if [ "${curUser}" == "root" ] ; then
+        ANT_raw "Addition to /etc/sudoers does not apply to ${curUser} -- With Vagrant (Guest) id is root and no passwd is required."
+        # su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
       else
-        ANT_raw "About to add ${curUser} to /etc/sudoers -- Using Specified debInstRootPasswd."
-        echo "${debInstRootPasswd}" | su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+        if [ -z "${debInstRootPasswd}" ] ; then
+          ANT_raw "About to add ${curUser} to /etc/sudoers -- You will be prompted for root passwd."
+          su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+        else
+          ANT_raw "About to add ${curUser} to /etc/sudoers -- Using Specified debInstRootPasswd."
+          echo "${debInstRootPasswd}" | su - root -c "echo ${curUser} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+        fi
       fi
+    else
+      ANT_raw "${curUser} is already in sudoers, Addition skipped"
     fi
 
     lpDo sudo tail -1 /etc/sudoers 

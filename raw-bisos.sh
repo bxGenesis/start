@@ -156,6 +156,7 @@ _EOF_
 
     if sysOS_isDeb13 ; then
        ANT_raw "Debian 13, Very Good, You will be current! Installing bisos.provision with pipx"
+       lpDo sudo apt-get install -y acl
        lpDo sudo apt-get install -y pipx
        lpDo pipx install bisos.provision
        lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform

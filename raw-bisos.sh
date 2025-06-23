@@ -75,7 +75,10 @@ _EOF_
     G_verbose="verbose"
     G_runMode="showRun"
 
-    if sysOS_isDeb12 ; then
+    if sysOS_isDeb13 ; then
+       ANT_raw "Debian 13, DeBisosIfy-ing"
+       lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i deBisosIfy
+    elif sysOS_isDeb12 ; then
        ANT_raw "Debian 12, DeBisosIfy-ing"
        lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i deBisosIfy
     elif sysOS_isDeb11 ; then
@@ -151,7 +154,12 @@ _EOF_
     ANT_raw "In case of failure of any sort, don't worry; you will have emacs."
     lpDo sudo apt-get install -y emacs
 
-    if sysOS_isDeb12 ; then
+    if sysOS_isDeb13 ; then
+       ANT_raw "Debian 13, Very Good, You will be current! Installing bisos.provision with pipx"
+       lpDo sudo apt-get install -y pipx
+       lpDo pipx install bisos.provision
+       lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform
+    elif sysOS_isDeb12 ; then
        ANT_raw "Debian 12, Very Good, You will be current! Installing bisos.provision with pipx"
        lpDo sudo apt-get install -y pipx
        lpDo pipx install bisos.provision
@@ -261,6 +269,18 @@ sysOS_detect
 function sysOS_isDebian {
   if [ "${sysOS}" = "debian" ] ; then
     return 0
+  else
+    return 1
+  fi
+}
+
+unction sysOS_isDeb13 {
+  if sysOS_isDebian ; then
+    if  [ "${sysDist}" = "13" ] ; then
+      return 0
+    else
+      return 1
+    fi
   else
     return 1
   fi

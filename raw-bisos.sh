@@ -43,6 +43,7 @@ alias Array='typeset -a'
 alias ListFuncs='typeset -F | sed -e s/"declare -f "//'
 alias TagVar='typeset -t'
 alias TagVarList='typeset -t | sed -e s/"declare -t "// | cut -d= -f1'
+alias EH_assert='opDoAssert eval '
 
 
 typeset -t debInstRootPasswd=""

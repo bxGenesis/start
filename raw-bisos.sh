@@ -15,6 +15,8 @@ set -o pipefail   # return is that of rightmost
 shopt -s expand_aliases
 shopt -s extglob
 
+umask 0002
+
 function vis_moduleDescription {  cat  << _EOF_
 This script installs unsited-bisos on a fresh debian-11 or debian-12.
 
@@ -162,11 +164,13 @@ _EOF_
        lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform
     elif sysOS_isDeb12 ; then
        ANT_raw "Debian 12, Very Good, You will be current! Installing bisos.provision with pipx"
+       lpDo sudo apt-get install -y acl   # Needed for docker desktop
        lpDo sudo apt-get install -y pipx
        lpDo pipx install bisos.provision
        lpDo $HOME/.local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform
     elif sysOS_isDeb11 ; then
        ANT_raw "Debian 11, Consider using Debian12! Installing bisos.provision with pip3"
+       lpDo sudo apt-get install -y acl
        lpDo sudo apt-get install -y python3-pip
        lpDo sudo pip3 install --upgrade bisos.provision
        lpDo /usr/local/bin/provisionBisos.sh -h -v -n showRun -i sysBasePlatform

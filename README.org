@@ -35,6 +35,11 @@ your own Raw-BISOS Platform and your own ByStar-Rims-Site.
 The bootstrap script is [[file:./raw-bisos.sh]], you can inspect and review it before
 running it.
 
+Raw-BISOS can also be *reconstructed automatically* across platforms --- boxes
+(raw metal), guests (KVM) and containers (Docker/Podman) --- via the orchestrators
+in =/bisos/core/raw/rebuild= (see its =README.org=). Beyond direct builds, these
+periodic reconstructions serve as BISOS/Blee *CI/CD*.
+
 
 * Bootstrapping Raw-BISOS From Fresh-Debian
   :PROPERTIES:

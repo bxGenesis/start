@@ -1,0 +1,339 @@
+#+TITLE: rawBisosCBMs --- Capability Bundles on Top of the Raw-BISOS Platform
+#+DATE: <2026-10-16 Fri>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:3
+
+Raw-BISOS is a basic platform. On its own it does little; what a BISOS host /does/ is added to it
+as *capabilities* --- an index of Python packages, a message broker, a workflow engine, monitoring,
+a web server --- each one a *Capability Bundle Materialization* (CBM). BISOS supports many CBMs.
+This document describes how they layer on Raw-BISOS, what the =.here= form of a CBM is for, how a
+whole set of them is materialized and regression-tested on a raw platform, and which CBMs exist.
+
+It sits next to [[file:../README.org][../README.org]] (Bootstrapping ByStar, BISOS and Blee), which
+ends where this one starts: with a Raw-BISOS platform in place.
+
+* Table of Contents     :TOC:
+- [[#the-layering][The Layering]]
+  - [[#1-the-raw-bisos-platform][1. The Raw-BISOS Platform]]
+  - [[#2-generic-cbm-pip-packages-----the-base-layer][2. Generic CBM pip Packages]]
+  - [[#3-niching-and-capabilitybpos-----real-servers-later][3. Niching and CapabilityBPOs]]
+  - [[#where-a-cbm-runs-for-real][Where a CBM Runs for Real]]
+- [[#what-a-cbm-is][What a CBM Is]]
+- [[#the-here-convention][The =.here= Convention]]
+- [[#what-every-base-cbm-package-guarantees][What Every Base CBM Package Guarantees]]
+- [[#minimal-out-of-the-box-configuration][Minimal, Out-of-the-Box Configuration]]
+- [[#regression-a-rawbisoscbm-materialization][Regression: a rawBisosCbm Materialization]]
+- [[#the-cbms][The CBMs]]
+  - [[#planted-in-bro_rawbisos][Planted in bro_rawBisos]]
+  - [[#packaged-to-be-planted][Packaged, to Be Planted]]
+  - [[#declared-not-yet-specified][Declared, Not Yet Specified]]
+- [[#measured-footprints][Measured Footprints]]
+- [[#adding-a-cbm][Adding a CBM]]
+- [[#open-items][Open Items]]
+- [[#references][References]]
+
+* The Layering
+
+#+begin_example
++-----------------------------------------------------------------------------+
+| 3. Niching + CapabilityBPOs  (later)                                        |
+|    a real server's configuration and scale, applied over the generic CBS    |
++-----------------------------------------------------------------------------+
+| 2. Generic CBM pip packages  (bisos.kafka, bisos.grafana, bisos.devpi, ...) |
+|    the base layer: each capability installed, minimal, reachable as x.here  |
+|    materialized through CBM leaves in bro_rawBisos -> regression-testable   |
++-----------------------------------------------------------------------------+
+| 1. Raw-BISOS platform  (raw-bisos.sh, from a Fresh-Debian)                  |
+|    /bisos, bystar, Blee, the venvs, bro_rawBisos as /bisos/platform         |
++-----------------------------------------------------------------------------+
+#+end_example
+
+** 1. The Raw-BISOS Platform
+
+=raw-bisos.sh= ([[file:../raw-bisos.sh]]) turns a Fresh-Debian into Raw-BISOS and *ends at the
+platform*: the =/bisos= hierarchy, the =bystar= account, Blee, the Python venvs
+(=/bisos/venv/py3/bisos3=, =asc=), pipx, and the initial BXO content from =bro_rawBisos= --- whose
+platform part is =/bisos/platform=, holding the CBM tree. No capability is materialized by it.
+Running =raw-bisos.sh= is itself the regression test of the platform layer.
+
+** 2. Generic CBM pip Packages --- the Base Layer
+
+Each capability is packaged once, generically, as a =bisos-pip= package (=bisos.<name>=): pinned
+sources, a systemd unit per component, an nginx vhost, a =.here= name, and a CBS
+(=<name>-cbs.pcs=) that declares the whole bundle. The package is a *starting point to be
+configured*, not a finished server: it brings the capability up in a minimal, out-of-the-box
+configuration that works immediately, that every rawBisos host gets in the same way, and that can
+therefore be regression-tested. A real server configures it further; the base never overwrites
+what was configured (config is written only when absent).
+
+** 3. Niching and CapabilityBPOs --- Real Servers (later)
+
+What makes a deployment real --- its scale, its site-specific settings, its security --- does not
+belong in the generic package. It is to be carried by a *CapabilityBPO* (a portable, git-based
+object holding one installation's customization of a capability) and applied over the generic CBS
+by *niching* (applying a CS in the context of its scope: user, platform, site; see
+=bisos.b.niche=). Both are future work; this layer is described here so that the base layer is
+understood as a base. Until then, a real installation is reached by configuring the base by hand
+(e.g. =parallelism = 128= in this platform's =/opt/airflow/airflow.cfg=, which the generic
+=bisos.airflow= does not set).
+
+** Where a CBM Runs for Real
+
+Two properties of a CBM are independent:
+
+- *Does it come up in a rawBisosCbm materialization?* --- is its leaf planted in =bro_rawBisos= and
+  enabled, so that every raw platform gets its minimal =.here= form.
+- *Where does it run at real scale?* --- on a raw platform alongside others, or in a *dedicated
+  VM* (the BISOS-Service-Platform hosts VMs; see [[file:../README.org][../README.org]]).
+
+Some CBMs are typically run in dedicated VMs: GitLab, Kafka, Airflow, devpi. Most others can come
+up in a rawBisosCbm materialization, with only a minimal configuration. A CBM can be both: devpi
+comes up minimally on every raw platform (=--no-root-pypi --threads 4=) and runs for real in a VM
+of its own. GitLab is too large to come up on a raw platform at all: its package is a base to be
+materialized in a dedicated VM.
+
+* What a CBM Is
+
+A *capability* is a complete piece of functionality, not a software package. Three terms:
+
+- *CBA* --- Capability Bundle /Abstraction/: the framework (=bisos.capability=).
+- *CBS* --- Capability Bundle /Specification/: one capability's declaration --- its sbom(s), its
+  systemd units, its assembly (=.here= DNS entry and nginx vhost). A =<name>-cbs.pcs= file in the
+  capability's package.
+- *CBM* --- Capability Bundle /Materialization/: turning a CBS into installed, configured, running
+  state on this host. A CBM *leaf* in the platform's tree points at a CBS; it does not duplicate it.
+
+Leaves live at =/bisos/platform/sys/cbm/<realm>/<capabilityType>/<capabilityName>/=:
+
+- *realm* --- who customizes it: platform, site, pals, user, collective.
+- *capability type* --- how it is delivered: =hereWeb=, =hereMail=, =rpyc=, =induct=.
+
+Each leaf holds =cbmProc.spcs= (the pointer: =capabilityName= + =cbsSpec=), =cbmProc.control= (the
+gate) and =cbmProc.status= (an append-only outcome log). The gate is:
+
+- *=enabled=* --- materialized when the tree is materialized.
+- *=available=* --- planted and visible, never materialized automatically (the initial state).
+- *=disabled=* --- skipped.
+
+Details: =bro_rawBisos/bro_rawBisosPlatform/README.org= and the =cbm-authorship= skill.
+
+* The =.here= Convention
+
+Every hereWeb CBM is reachable as =http://<name>.here=: a fake domain, written into =/etc/hosts= on
+a =127.0.22.x= address that =bisos.banna= assigns once to the capability's port, served by nginx
+proxying to the program on =127.0.0.1=. Nothing listens beyond loopback. Every raw platform gets the
+same names, addresses and ports. That is what makes a CBM both an *out-of-the-box experience*
+(browse =http://grafana.here= right after materializing) and *regression-testable* (the same checks
+work on any raw platform).
+
+* What Every Base CBM Package Guarantees
+
+The packages are built on one pattern (the =cbm-package-authorship= skill), so for each of them:
+
+- *Single source of facts* --- =bisos/<name>/<name>Info.py=: versions, checksums, paths, ports,
+  login, and the generators of every file the package writes.
+- *Pinned, verified sources* --- upstream releases pinned with their published checksums, or
+  Python packages at exact pins. Python programs go in the shared venv =/bisos/venv/py3/asc=; a
+  program shown not to work there gets an isolated venv of its own,
+  =/bisos/venv/py3/isolated/<program>/=, with its reason recorded and its dependencies hash-pinned.
+- *Registered numbers* --- ports, =.here= IPs and account uid/gid from =bisos.banna=, the same on
+  every platform; never hardcoded.
+- *Written once* --- config files are written only when absent, so hand configuration survives a
+  re-materialization; =<name>Admin.cs -i driftCheck= reports how a live file differs from the
+  generator.
+- *Idempotent* --- materializing again changes nothing, and installs nothing, when nothing changed.
+- *Two sides* --- a server sbom (run the service), a usage sbom (use it from any host: promtool,
+  gcx, twine, a client library), and a bundle sbom that the CBS runs to get both.
+- *rawBisos login convention* --- where the program has a login: user =admin=, password the
+  service's name (=admin / grafana=). Convenient and *insecure by design*: rawBisos is public and
+  recognized as insecure. Securing a host is a separate layer on top.
+
+* Minimal, Out-of-the-Box Configuration
+
+In a rawBisosCbm materialization a CBM gets only a minimal configuration: enough to work and be
+tested, small enough that many can share one raw platform. Scaling up is a real server's business
+(layer 3). Measured on a Debian 13 platform:
+
+| Capability | Minimal (=.here=) setting                  | Measured            |
+|------------+--------------------------------------------+---------------------|
+| devpi      | =--no-root-pypi --threads 4=               | 74 MB (mirror: 504) |
+| kafka      | broker heap 256m, Kafbat heap 128m (below) | 461 + 270 MB        |
+| grafana    | no plugin downloads, no phoning home       | 334 MB              |
+| prometheus | 15 s scrape of itself and node_exporter    | 127 + 29 MB         |
+| pypiserver | waitress for the index, uvicorn for the UI | 30 + 44 MB          |
+
+- *kafka*: broker =-Xms128m -Xmx256m=; Kafbat UI =-Xmx128m -XX:+UseSerialGC=
+  =-XX:TieredStopAtLevel=1 -Xss512k=. As installed here: 906 + 1168 MB. Measured with a scratch
+  broker and Kafbat (message round trip, cluster online); not yet what =bisos.kafka= writes.
+- *grafana*: =[plugins] preinstall_disabled = true=, =[analytics] reporting_enabled = false=.
+
+Two capabilities on this platform are configured for real use, not minimally: *Airflow* (the one
+CBM here that serves real work: LocalExecutor with =parallelism = 128=) and *Kafka* (as installed).
+Their minimal forms, and how the generic packages should default, are still under discussion (see
+Open Items).
+
+* Regression: a rawBisosCbm Materialization
+
+Platform regression is =raw-bisos.sh=. *CBM regression is managed by =bisos.capability=*, from
+=/bisos/git/bxRepos/bisos-pip/capability/py3/bin/=:
+
+#+begin_src bash
+sysCbmManage.cs -i fullyMaterialize
+#+end_src
+
+Its =cbmDispatch= walks the platform's CBM tree with the =bisos.fileObj= walker and forwards to
+every leaf, first =cbm_status=, then =cbm_materialize=:
+
+#+begin_example
+cd /bisos/platform/sys/cbm/collective/hereWeb
+ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_status
+ftoBranchProc.spcs -i fto_forwardToLeaves --cmndName=cbm_materialize
+#+end_example
+
+Each leaf's =cbm_materialize= checks its gate; an =enabled= leaf subprocess-invokes its CBS with
+=cbs_materialize= (sboms, units, assembly) and appends the outcome to its =cbmProc.status=. The
+enabled leaves planted in =bro_rawBisos= are therefore exactly what a rawBisosCbm materialization
+brings up, and the same set on every raw platform. Each base package is idempotent and checks its
+own installation (=driftCheck=, =py3/tests/verify.sh=), so a materialization run is a regression
+test of the whole base layer.
+
+Current properties of the walk, to know when reading its results:
+
+- *Scope*: it walks =collective/hereWeb= only --- a stated workaround, because walking from
+  =collective/= does not respect =orderedBranches=. Leaves of other types (=induct=, =rpyc=,
+  =hereMail=) are not covered.
+- *Order*: =branchesOrdered= in =collective/hereWeb/ftoBranchProc.spcs= (today: nginx, airflow,
+  kafka, prometheus, grafana, pypiserver, devpi, geneweb, reactPlus, gatsbyBxSidebar, csPlayerUi,
+  platform). A new leaf goes there, after what it depends on, and before =platform=.
+- *Exit status is not the verdict*: a failed Cmnd still exits 0 (=g_csMain=), and a group sbom
+  carries on after a failed sub-sbom. Read the output and the =cbmProc.status= lines (both
+  recorded in =AI-Outputs.org=).
+
+* The CBMs
+
+Gate: the leaf's =cbmProc.control= --- *enabled* (in the rawBisosCbm set) or *available* (planted,
+not materialized automatically). Real home: where it runs at real scale.
+
+** Planted in bro_rawBisos
+
+All under =collective/hereWeb/=, in walk order; all enabled. =http://platform.here= shows this
+table live from the tree (gate, last outcome, what each =.here= answers) as of its last build.
+
+| Capability      | Gate    | =.here=             | Real home    | Usage side, notes                  |
+|-----------------+---------+---------------------+--------------+------------------------------------|
+| nginx           | enabled | ---                 | raw platform | every vhost needs it; first        |
+| airflow         | enabled | airflow.here        | dedicated VM | real use; 4 units + PostgreSQL     |
+| kafka           | enabled | kafka.here          | dedicated VM | librdkafka (Kerberos)              |
+| prometheus      | enabled | prometheus.here     | raw platform | promtool                           |
+| grafana         | enabled | grafana.here        | raw platform | gcx                                |
+| pypiserver      | enabled | pypiserver.here     | raw platform | twine                              |
+| devpi           | enabled | devpi.here          | dedicated VM | devpi-client                       |
+| geneweb         | enabled | geneweb.here        | raw platform | ged2gwb, gwb2ged                   |
+| reactPlus       | enabled | ---                 | raw platform | sbom only, no units                |
+| gatsbyBxSidebar | enabled | starterSidebar.here | raw platform |                                    |
+| csPlayerUi      | enabled | csPlayerUi.here     | raw platform | Gatsby site wrapping csLineInvoker |
+| platform        | enabled | platform.here       | raw platform | this table as a site; last         |
+
+Where each leaf's CBS (=cbsSpec=) is:
+
+- nginx, reactPlus --- =/bisos/git/bxRepos/bisos-pip/webCap/py3/bin/{nginx,reactPlus}-cbs.pcs=
+  (bisos.webCap; moved from =/bisos/asc/web/bin= on 2026-10-18)
+- airflow, kafka, prometheus, grafana, pypiserver, devpi, geneweb ---
+  =/bisos/git/bxRepos/bisos-pip/<name>/py3/bin/<name>-cbs.pcs=
+- gatsbyBxSidebar --- =/bisos/git/bxRepos/bisos-web/gatsby-starter-bystar-nestedSidebar/=
+  =gatsbyBxSidebar-cbs.pcs=
+- csPlayerUi --- =/bisos/git/bxRepos/bisos-web/csPlayer-webUi/csPlayerUi-cbs.pcs=
+- platform --- =/bisos/platform/web/astro/cbm/platform-cbs.pcs= (in =bro_rawBisos= itself)
+
+The six =bisos.<name>= leaves were planted on 2026-10-16. Each package had been materialized and
+verified with =<name>-cbs.pcs -i cbs_materialize= directly; geneweb and platform were also
+materialized through their leaves (=cbm_materialize=). =starterSidebar.here= answers 404 on the
+platform where this was written: the starter's =public/= has not been built there.
+
+- *grafana* goes after prometheus in the walk: it provisions prometheus as its datasource, by banna
+  port rather than by import, and works (with the datasource unreachable) without it.
+- *pypiserver.here* serves two programs: pypi-browser at =/=, the index at =/simple/=.
+- *devpi* is minimal here: =--no-root-pypi --threads 4= (81 MB measured). A real devpi, with its
+  PyPI mirror, runs in a dedicated VM.
+- *geneweb* serves an empty =demo= base out of the box; wizard password =geneweb=; gwsetup is not
+  run (it cannot bind an address).
+
+** Packaged, to Be Planted
+
+| Capability | =.here=     | Intended gate | Real home    | Usage side |
+|------------+-------------+---------------+--------------+------------|
+| gitlab     | gitlab.here | available     | dedicated VM | glab       |
+
+- *gitlab* is base code: checked without installing GitLab, to be materialized in a dedicated VM.
+  GitLab's own baseline for one node is 8 vCPU and 16 GB of memory (8 GB as the stated minimum for
+  memory-constrained setups); its Linux package brings its own PostgreSQL, Redis, Puma, Sidekiq,
+  Gitaly and monitoring under its own supervisor and Chef-driven configuration.
+
+** Declared, Not Yet Specified
+
+Leaf directories with a (blank) =README.org= and no =cbmProc.spcs=: =induct/lcnt=,
+=induct/bleeBuild=, =induct/emacsSrcBuild=, =rpyc/facterPerf=, =hereMail/residentMta=.
+
+* Measured Footprints
+
+Resident memory at idle on one Debian 13 platform, 2026-10-15/16.
+
+| Service                         | Memory        | Install disk                |
+|---------------------------------+---------------+-----------------------------|
+| prometheus + node_exporter      | 127 + 29 MB   | 275 MB (TSDB 78 MB, 1 day)  |
+| grafana                         | 334 MB        | 1.5 GB                      |
+| pypiserver + pypi-browser       | 30 + 44 MB    | 47 MB (isolated venv)       |
+| devpi-server, PyPI mirror on    | 504 MB        | 78 MB venv                  |
+| devpi-server, minimal           | 74--81 MB     | isolated venv (55 packages) |
+| kafka + Kafbat UI, as installed | 906 + 1168 MB | 351 MB                      |
+| kafka + Kafbat UI, minimal      | 461 + 270 MB  |                             |
+| airflow, 4 processes, idle      | about 0.9 GB  |                             |
+| airflow, this platform's load   | + about 12 GB |                             |
+| geneweb gwd, 2 workers          | 21 MB         | 171 MB                      |
+| gitlab (GitLab's figures)       | 8--16 GB      | 40 GB + DB + repositories   |
+
+Airflow's load is 129 task processes under =parallelism = 128=. GitLab was not measured here.
+
+* Adding a CBM
+
+1. Build the generic package with the =cbm-package-authorship= skill: banna registrations, pinned
+   sources, =<name>Info.py=, the sboms, units, vhost, CBS, admin CS, =verify.sh=.
+2. Decide its minimal configuration for the rawBisosCbm set, and whether it is typically run in a
+   dedicated VM.
+3. Plant its leaf in =bro_rawBisos=, at =bro_rawBisosPlatform/sys/cbm/<realm>/<type>/<name>/=:
+   =cbmProc.spcs= pointing at its CBS, =cbmProc.control=, an empty =cbmProc.status= (the
+   =cbm-authorship= skill).
+4. Set the gate: =enabled= to join the rawBisosCbm set, =available= to be planted only.
+5. Add it to =branchesOrdered= after what it depends on, and to the tables above.
+6. Run =sysCbmManage.cs -i fullyMaterialize=; read the output and the leaf's =cbmProc.status=.
+
+* Open Items
+
+- Plant gitlab's leaf (available); run a full =sysCbmManage.cs -i fullyMaterialize= with the new
+  leaves.
+- gitlab's first materialization, in a dedicated VM.
+- Kafka's and Airflow's minimal forms, and whether the generic packages default to minimal
+  (kafka's base currently writes =-Xms512m -Xmx1g= and a 512m Kafbat heap).
+- The walk beyond =collective/hereWeb= (ordering), so that =induct=, =rpyc= and =hereMail=
+  leaves are covered.
+- An exit status a regression run can trust (=g_csMain=; =sbomSpecs_fullUpdate=).
+- Layer 3: niching and CapabilityBPOs.
+
+* References
+
+- [[file:../README.org][../README.org]] --- Bootstrapping ByStar, BISOS and Blee: the platform
+  layers.
+- =/bisos/git/bxRepos/bxObjects/bro_rawBisos/= --- the BRO holding the CBM tree (=/bisos/platform=).
+- =/bisos/git/bxRepos/bisos-pip/capability/= --- CBA/CBS/CBM framework; =sysCbmManage.cs=.
+- =/bisos/git/bxRepos/bisos-pip/fileObj/= --- the tree walker (=ftoBranchProc.spcs=).
+- =/bisos/git/bxRepos/bisos-pip/banna/= --- ports, =.here= IPs, account numbers.
+- =/bisos/git/bxRepos/bisos-pip/{kafka,prometheus,grafana,pypiserver,devpi,gitlab,geneweb,airflow}/=
+  ---
+  the packages;
+  each README.org says what it installs, where, and its measured state.
+- Skills =cbm-package-authorship= and =cbm-authorship=, in
+  =/bisos/git/bxRepos/bisos/defaults/ai-templates/mother/_skills/=.
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 3)
+# End:

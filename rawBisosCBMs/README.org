@@ -258,6 +258,18 @@ platform where this was written: the starter's =public/= has not been built ther
 - *geneweb* serves an empty =demo= base out of the box; wizard password =geneweb=; gwsetup is not
   run (it cannot bind an address).
 
+Under =collective/induct/=, which the walk does not reach yet (see Open Items):
+
+| Capability   | Gate      | =.here= | Real home    | Usage side, notes                           |
+|--------------+-----------+---------+--------------+---------------------------------------------|
+| vscodeClaude | available | ---     | each desktop | per user: run as the VS Code user, not root |
+
+- *vscodeClaude* --- =/bisos/git/bxRepos/bisos-pip/vscodeClaude/py3/bin/vscodeClaude-cbs.pcs=, of
+  type =induct= (no units): =vscode-sbom.pcs= (VS Code, through sudo), then
+  =vscodeClaude-assemble.cs= for the invoking user (pinned extensions, Claude Code's among them; the
+  VS Code to Blee link; the Claude Code hooks to Blee); =-i fullCheck= reports them read-only.
+  Planted 2026-11-01, the first =induct= leaf with a =cbmProc.spcs=.
+
 ** Packaged, to Be Planted
 
 | Capability | =.here=     | Intended gate | Real home    | Usage side |

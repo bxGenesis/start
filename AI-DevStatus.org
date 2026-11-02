@@ -1,0 +1,54 @@
+#+title: Development Status & Continuation Handoff
+#+TAGS: me ai aiAndMe
+
+# Provenance (installed once by aiActivity.cs --- not regenerated):
+#   Date:      2026-11-02T00:10:54+00:00
+#   User:      bystar
+#   Templates: /bisos/apps/defaults/ai-templates
+#   Command:   /bisos/venv/py3/devbin/aiActivity.cs -i initiate --activity=bisos-genesis
+
+####+BEGIN: b:ai:file/particulars
+* AI Working Context
+  Working Directory: /bisos/git/auth/bxRepos/bxGenesis/start
+  File: /bisos/git/auth/bxRepos/bxGenesis/start/AI-DevStatus.org
+  Activity: bisos-genesis
+  Companion Docs: AI-WORKFLOW.org, AI-Activity.org, AI-DevStatus.org, README.org
+####+END:
+
+This file is a working-state handoff so development can continue on another
+machine (which has this repo but NOT the developer's =~=). It captures the
+architecture, what works, what is untested and the design decisions made so far.
+
+This file is maintained by Claude. Updates are typically triggered by the
+=/bx-status-update= slash command, after major interactions, or before a release.
+
+Note to a fresh Claude: this file is intentionally sparse at project start.
+Fill in the sections below when asked to update, following the structure provided.
+
+* Current State
+As of 2026-11-02. Initiated as the bisos-genesis AI-Activity, a singleton (one kind, one instance:
+the one Raw-BISOS chain), so its AI-Activity.org holds the chain, the absorption table and how to
+check a platform. WorkPlan 2.1: this container checked against the chain, read-only; the gaps are
+in 2.1's Results (pip packages for rawBisos-sbom.pcs, 20 repos missing from bisos/common's
+registry, sboms the chain does not run). WorkPlan 2.2, its first stage: bisos/bsip4's
+rawBisos-sbom.pcs installs aiActivity, dockerProc, gitist; the new repos are data in
+/bisos/core/bsip/bin/bxRepos-gitist.pcs (anon or auth as told, else as the bxRepos symlink says),
+run by bisosBaseDirs.sh -i bxGitReposBasesReClone and by bsipProvision.sh -i sysBaseGeneralAugment
+(after rawBisos-sbom.pcs); bx-blee/vscode-claude went into bisos.common's registry. Next: push
+bisos/bsip4, release bisos.common, then the full rebuild on a VM.
+
+* Architecture
+  [Key components, file structure, entry points]
+
+* What Works
+  [Verified functionality]
+
+* What Is Untested
+  [Known gaps]
+
+* Key Design Decisions
+  [Non-obvious choices and their rationale]
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# End:

@@ -1,0 +1,251 @@
+#+title: Work Plan
+#+DATE: <2026-06-10 Wed 13:54>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:4
+#+TAGS: me ai aiAndMe
+
+# Provenance (installed once by aiActivity.cs --- not regenerated):
+#   Date:      2026-11-02T00:10:54+00:00
+#   User:      bystar
+#   Templates: /bisos/apps/defaults/ai-templates
+#   Command:   /bisos/venv/py3/devbin/aiActivity.cs -i initiate --activity=bisos-genesis
+
+####+BEGIN: b:ai:workflow/driver
+####+END:
+
+####+BEGIN: b:ai:file/particulars
+* AI Working Context
+  Working Directory: /bisos/git/auth/bxRepos/bxGenesis/start
+  File: /bisos/git/auth/bxRepos/bxGenesis/start/AI-WorkPlan.org
+  Activity: bisos-genesis
+  Companion Docs: AI-WORKFLOW.org, AI-Activity.org, AI-DevStatus.org, README.org
+####+END:
+
+This Work Plan file drives the AI collaborative development.
+Interactions are broken down into "Stages". Each Stage has a set
+of TODOs that I work with Claude to accomplish.
+
+Note to a fresh Claude: read this file together with AI-WORKFLOW.org,
+AI-Activity.org and AI-DevStatus.org to orient yourself. The =<<Context Confirmation>>=
+TODO below is the standard first step, or use =/bx-confirm-root= as the automated equivalent.
+TODOs tagged =:ai:= are assigned to Claude. After completing a TODO, summarize results
+under =----- Results: ------= and mark it DONE.
+
+
+* Overview, Purpose and Context
+
+<<Overview>>
+
+Description of the specifics of this particular AI-Activity comes here.
+
+
+* Stage 0: Confirm AI's Understanding of This Repo's Context
+
+Goal: Confirm AI's understanding of the context and capture that in [[Context Confirmation]] TODO.
+
+
+* Stage 0 TODOs
+** +
+** LOOP [#A] <<Context Confirmation>> for AI (typically triggered by /bx-confirm-root) :aiAndMe:
+SCHEDULED: <2026-06-09 Tue>
+Must be repeated each time a new Claude instance is started here.
+Based on the series of files starting from CLAUDE.md in this repo,
+describe succinctly what you have understood.
+Enumerate explicitly which files you have imported and which you have considered.
+Prompt the user to confirm that the desired/appropriate model (/model) is being used for this project.
+Since this is to be repeated, leave the todo tag as LOOP.
+** -
+
+* Stage 1: Misc Place Holder 
+
+<<Stage 1>>
+
+Goal: A placeholder for misc ideas and TODOs
+
+
+* Stage 1 TODOs (Misc)
+** +
+** TODO [#C] A Placeholder
+** -
+
+
+* Stage 2: Formalize the Process of Capturing Updates to a system in rawBisos
+
+<<Stage 2>>
+
+Goal: Capture update and new features in the raw-bisos chain.
+
+The ./raw-bisos.sh script is used to re-create the entirety of BISOS on a Fresh Debian System
+
+When various features and CBMs are added, they need to be reflected in raw-bisos's chain.
+There are container based re-creation facilities in /bxRepos/bxObjects/bro_dockerfiles/
+that start from a fresh debian and run the entirety of ./raw-bisos.sh
+These happen on VMs. When running in a container do NOT run ./raw-bisos.sh
+
+Absorbing new features in the raw-bisos chain involves the following:
+
+- When a pip-package is created or updated, it should be pushed to
+  PyPi so that it can be pip and pipx installed.
+
+- When a new pip-package is created, it should be added to
+   /bisos/core/bsip/bin/rawBisos-sbom.pcs
+
+- When a new repo has been created or deleted on github,
+  it needs to be reflected in /bisos/git/bxRepos/bisos-pip/common/py3/bisos/common/
+
+The abobe applies to the pure RawBisos, the process of adding RawBisosCbms will be added later.
+
+
+* Stage 2 TODOs  -- In Progress
+** +
+** TODO [#A] <<2.1>> Analyze [[Stage 2]] and capture the details in ./AI-Activity.org
+SCHEDULED: <2026-06-09 Tue>
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND: <2026-10-01 Thu 10:32>
+:END:
+In the context of this particular container, create a list of what
+needs to be added/modified for raw-bisos to produce its equivalent.
+Do not run the ./raw-bisos.sh script.
+Just determine what is new on this platform that needs to be absorbed.
+----- Results: ------
+2026-11-02 (Claude). Checked read-only on this container (docker); raw-bisos.sh not run. The chain,
+the absorption table and how to check are now in AI-Activity.org (a singleton: see there). Found:
+
+/Pip packages/ (bisos3 venv: 63 bisos.*; the chain: bisos.py3-all's closure, 45, plus 6 in
+rawBisos-sbom.pcs):
+
+| Package                | State here            | To absorb                              |
+|------------------------+-----------------------+----------------------------------------|
+| bisos.aiActivity       | PyPI 0.14, editable   | pp() in rawBisos-sbom.pcs              |
+| bisos.dockerProc       | PyPI 0.17, editable   | pp() in rawBisos-sbom.pcs              |
+| bisos.gitist           | PyPI 0.13 (0.12 here) | pp() in rawBisos-sbom.pcs              |
+| bisos.vagrantBaseBoxes | PyPI 0.23             | pp(), if every Raw-BISOS needs it      |
+| bisos.vscodeClaude     | not on PyPI, editable | release; then pp() (for vscode-claude) |
+
+- Not on PyPI, editable here, CBM layer: bisos.kafka, grafana, prometheus, pypiserver, devpi,
+  geneweb, gitlab --- release, then absorbed with their CBM leaves.
+- bisos.postgres (not installed) is CBM layer too; bisos.airflow is CBM-like but already in
+  rawBisos-sbom.pcs.
+- Editable here at a local version below PyPI (capability 0.1 / 0.25, pals 0.1 / 0.16, dnsCap
+  0.1 / 0.14): their next release must be numbered above PyPI's.
+- Installed behind PyPI (bpo, common, platform, sites, gitist): a fresh chain gets the newer ones.
+- Local repos with no PyPI package and not used by the chain: cs, io, marme, namespace, qmailSvc;
+  aiActivity.ok2Del is a stale local clone of aiActivity (delete locally).
+
+/Repos/ (180 here, 197 gitClone lines in bisos/common baseDirBxRepos.py):
+- On GitHub and here, missing from the registry (20): bisos-pip/ devpi geneweb gitist gitlab
+  grafana kafka postgres prometheus pypiserver vscodeClaude; bisos-web/astro-starter-bystar;
+  blee-binders/evolution; blee/vscode-claude (bx-blee); bxObjects/ aiActivityTemplates
+  aiTemplates-DE aiTemplates-workFlow; cliGui/ csLib csPlayer-arena webCliGui;
+  mb-ephemera/pub-shuttle.
+- In the registry, not cloned here (38): all answer on GitHub, but six only by redirect: blee-binders/
+  bisos-dev, bisos-model, blee-dev, blee-model, bxde-dev, bxde-model were renamed *.moved (retired);
+  their gitClone lines go. (Corrected 2026-11-02 from the GitHub API's org listings.)
+
+/Sboms/: the chain runs pyVenv-asc, rawBisos and nvm only (rawBisos-sbom.pcs's sbomsList is empty).
+On this platform but run by no chain step: ai-claude, ai-tools, gh, git, gpg, libreoffice, npm,
+rawBisos-fonts, tor, vncServer, vncViewer (bsip4), vscode (bisos.vscodeClaude), dockerProc, podman;
+plus the CBM sboms. Each wants a decision: into sbomsList, or by hand / per CBM.
+
+Done 2026-11-02: pp() for bisos.aiActivity, dockerProc, gitist in rawBisos-sbom.pcs (bisos/bsip4).
+Not done: vagrantBaseBoxes and vscodeClaude (a decision; a release first); the user's releases to
+PyPI; the repo registry, which [[2.2]] proposes to replace instead of extending.
+** TODO [#A] <<2.2>> Modernization of raw-bisos with gitist :aiAndMe:
+:PROPERTIES:
+:ORIGIN: Mohsen
+:IMPORTANCE: Medium
+:REPO: this
+:BASE: this
+:FOUND: <2026-11-02 Mon>
+:END:
+Replace the repo registry of the chain (bisos/common baseDirBxRepos.py, run by bisosBaseDirs.sh
+as bx-gitReposBases --pbdName=bxReposRoot) with planted gitist .pcs files. raw-bisos predates
+planted CSs.
+
+Today (read 2026-11-02, Claude):
+- The registry is Python: 197 gitClone / gitCloneBase lines in pbdDict_bxReposRoot. Adding or
+  removing a repo means editing bisos.common and releasing it to PyPI before a fresh chain sees it.
+- It is a curated selection, not every repo of an org: of bisos-pip's 85 GitHub repos 68 are
+  listed; others are left out on purpose (marmee.obsolete, the defunc-*, the *.moved, the bulky
+  aip_vagrantBaseBoxes.*) or simply forgotten (the 20 of 2.1).
+- It maps names: local blee <- GitHub bx-blee, unisos <- bx-unisos, mohsenBanan <- ByStar/
+  mohsenBananBase; and an org directory is itself a clone of that org's base repo (<org>/base, or
+  bisos-web/.github), with the other repos cloned inside it.
+- anon clones use git://github.com, which GitHub turned off in 2022; it works only through the
+  "url.https://.insteadOf git://" that bisosAccounts_lib.sh sets. auth clones use an ssh alias
+  (--gitLabel=mb1_github). Two sibling pbds stay out of scope here: bxReposCollection (the
+  top-level directories and links) and extRepos (external repos).
+
+gitist (bisos-pip/gitist) already has: a seed with planted .pcs per brand and access type (anon
+https, auth by ssh alias = gitAccessAcct, or token); gitist_reposList (the org's repos from the
+API), gitist_reposClone (every repo of an org), gitist_clone (one repo); existing clones skipped.
+
+Proposed:
+- One planted pcs per access type, e.g. bxRepos-anon-gitist.pcs and bxRepos-auth-gitist.pcs,
+  whose csCmndsList is the registry as data: per org, its local directory, its base repo, and
+  either "all but these" (exclusion patterns: *.moved, defunc-*, *.obsolete, archived) or an
+  explicit list. "All but" makes a new GitHub repo appear without any edit, so rule 3 of Stage 2
+  shrinks to keeping the exclusions.
+- gitist gains what the registry has and it lacks: a local directory per org (blee for bx-blee),
+  the base repo cloned as the org directory, exclusions, and a dry run (what would be cloned, and
+  what is here but no longer on GitHub).
+- bisosBaseDirs.sh runs the pcs instead of the bxReposRoot pbd; baseDirBxRepos.py's list is
+  retired once a fresh chain (bro_dockerfiles, on a VM) clones the same tree.
+
+Decided (Mohsen, 2026-11-02): the pcs live in /bisos/core/bsip/bin (bisos/bsip4), not in gitist's
+bin: once the chain reaches bsip/bin everything runs from there, and a change is a push, not a
+release (as rawBisos-sbom.pcs). The seed stays in bisos.gitist; the plant is bsip's.
+- Bootstrapping, corrected (Mohsen, 2026-11-02): pipx belongs to stages 0--2 of the bootstrap
+  model (blee-binders bisos-core/bootstrap/bootstrapModel panel; now in AI-Activity.org). From
+  /bisos/core/bsip/bin (stage 3) the Python environment is set up, so the plant uses
+  "#!/bin/env python" on bisos3. (An earlier pipx test here showed bisos.gitist 0.13 imports
+  python-gitlab without declaring it: still to fix, python-gitlab in setup.py's :extras.)
+- Anon then auth (Mohsen, 2026-11-02): the symlink /bisos/git/bxRepos points to
+  /bisos/git/anon/bxRepos or /bisos/git/auth/bxRepos; the plant can read it to choose the mode and
+  the destination.
+To decide: "all but" or explicit lists, per org; whether bxReposCollection and
+extRepos follow later; the anon API rate limit (60 requests an hour: enough for about 16
+orgs, or list without the API).
+----- Results: ------
+2026-11-02, staged (Mohsen): the exception model is deferred; first, the minimal step. The repos
+missing from bisos.common (2.1) are an explicit list in a plant, not added to baseDirBxRepos.py:
+- /bisos/core/bsip/bin/bxRepos-anon-gitist.pcs (bisos/bsip4, new): 19 GitHub <org>/<repo>, each a
+  gitist_clone into /bisos/git/anon/bxRepos/<org>/<repo> (csCmndEval all clones them; existing
+  ones skipped). Shebang (Mohsen): #!/bin/env python, the bisos3 venv.
+- bx-blee/vscode-claude is listed but commented out: its local dir is blee/, and gitist clones to
+  <org>/<repo>; it waits for the org-to-dir mapping.
+- Tested with a throwaway pipx venv (bisos.gitist 0.13 + python-gitlab): the menu shows the 19;
+  cliGui/csLib cloned into a scratch --destBaseDir, and skipped on a second run.
+2026-11-02, next (Mohsen's decisions): one plant for both modes, gitLabel as bisosBaseDirs.sh,
+bx-blee/vscode-claude the old way --- enough for a full rebuild on a VM.
+- Renamed bxRepos-gitist.pcs. The mode and destination follow realpath(/bisos/git/bxRepos): auth
+  (/bisos/git/auth/bxRepos) clones over ssh as git@<gitLabel>:<org>/<repo>, gitLabel from the
+  environment, default github.com (bisosBaseDirs.sh's default; mb1_github etc. on developer hosts);
+  otherwise anon, https, into /bisos/git/anon/bxRepos. Checked: the plant targets the auth tree
+  here; the URLs for anon, auth/github.com and auth/mb1_github match bisosBaseDirs.sh's forms (no
+  clone with credentials).
+- bisos.common baseDirBxRepos.py: gitClone('blee/vscode-claude', 'bx-blee/vscode-claude') with the
+  other blee packages; needs a bisos.common release before a fresh chain clones it.
+- The chain calls it (Mohsen: minimal and essential; the *.moved lines stay): bisosBaseDirs.sh
+  -i bxGitReposBasesReClone runs it right after the bxReposRoot pbd, as a sibling script, with
+  vcMode, bxReposBaseDir=<baseDir>/bxRepos and gitLabel in its environment. That function is given
+  the tree and the mode (an auth clone is made before the symlink is switched), so the plant takes
+  them from the environment and reads the symlink only when run alone. Checked: both env cases.
+- A fresh chain's first, anonymous clone is stage 2's (provisioners bisosBaseDirsSetup.sh), which
+  does not reach that function. So bsipProvision.sh -i sysBaseGeneralAugment also runs the plant,
+  right after rawBisos-sbom.pcs (which brings bisos.gitist into bisos3), as bisos like its
+  neighbours; on a new VM the symlink is anon, and only the missing repos are cloned.
+- bisos/common has no AI files: its one change (the blee/vscode-claude gitClone line) is recorded
+  here only.
+Not yet: the VM rebuild (after pushing bisos/bsip4 and releasing bisos.common).
+** -
+
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# eval: (setq-local org-log-done 'time)
+# End:

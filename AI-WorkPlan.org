@@ -154,6 +154,12 @@ plus the CBM sboms. Each wants a decision: into sbomsList, or by hand / per CBM.
 Done 2026-11-02: pp() for bisos.aiActivity, dockerProc, gitist in rawBisos-sbom.pcs (bisos/bsip4).
 Not done: vagrantBaseBoxes and vscodeClaude (a decision; a release first); the user's releases to
 PyPI; the repo registry, which [[2.2]] proposes to replace instead of extending.
+2026-11-02, later: Mohsen released the packages (common 1.15, aiActivity 0.16, capability 0.26,
+pals 0.17, fileObj 0.11, dnsCap 0.15, webCap 0.16, dockerProc 0.19, airflow 0.14; new on PyPI:
+vscodeClaude, kafka, grafana, prometheus 0.1; not released: pypiserver, devpi, geneweb, gitlab,
+postgres). Checked against PyPI: those carry no unreleased code. pp("bisos.vscodeClaude") added to
+rawBisos-sbom.pcs. Still unreleased from earlier work: banna (the CBM packages' registrations), b,
+bashStandaloneIcmSeed, pycs, bxoGitlab, lcnt, and small ones.
 ** TODO [#A] <<2.2>> Modernization of raw-bisos with gitist :aiAndMe:
 :PROPERTIES:
 :ORIGIN: Mohsen

@@ -37,6 +37,11 @@ run by bisosBaseDirs.sh -i bxGitReposBasesReClone and by bsipProvision.sh -i sys
 (after rawBisos-sbom.pcs); bx-blee/vscode-claude went into bisos.common's registry. Next: push
 bisos/bsip4, release bisos.common, then the full rebuild on a VM.
 
+2026-11-13 (uncommitted): =rawBisosCBMs/README.org= follows bisos-pip/capability's AI-WorkPlan.org
+Stage 4 (pointer, not a copy): the walk is hereWeb, pals, then induct; csPlayerPerf added to the hereWeb
+table; a new induct table (7 leaves); "Declared, Not Yet Specified" down to =rpyc/facterPerf= and
+=hereMail/residentMta=.
+
 * Architecture
   [Key components, file structure, entry points]
 

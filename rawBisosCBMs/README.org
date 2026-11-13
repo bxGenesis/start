@@ -199,12 +199,15 @@ test of the whole base layer.
 
 Current properties of the walk, to know when reading its results:
 
-- *Scope*: it walks =collective/hereWeb= only --- a stated workaround, because walking from
-  =collective/= does not respect =orderedBranches=. Leaves of other types (=induct=, =rpyc=,
-  =hereMail=) are not covered.
-- *Order*: =branchesOrdered= in =collective/hereWeb/ftoBranchProc.spcs= (today: nginx, airflow,
-  kafka, prometheus, grafana, pypiserver, devpi, geneweb, reactPlus, gatsbyBxSidebar, csPlayerUi,
-  platform). A new leaf goes there, after what it depends on, and before =platform=.
+- *Scope*: it walks =collective/hereWeb=, then =pals=, then =collective/induct= (since 2026-11-13),
+  each from its own =ftoBranchProc.spcs= --- a stated workaround, because walking from
+  =collective/= does not respect =orderedBranches=. =rpyc= and =hereMail= are not covered (no
+  leaves yet).
+- *Order*: =branchesOrdered= in each branch's =ftoBranchProc.spcs=. =collective/hereWeb= (today:
+  nginx, airflow, kafka, prometheus, grafana, pypiserver, devpi, geneweb, reactPlus,
+  gatsbyBxSidebar, csPlayerPerf, csPlayerUi, platform): a new leaf goes after what it depends on,
+  and before =platform=. =collective/induct= (today: pltfrmDevelBecome, lcntCore, lcntBases,
+  lcntMultiMedia, emacsSrcBuild, bleeBuild, vscodeClaude).
 - *Exit status is not the verdict*: a failed Cmnd still exits 0 (=g_csMain=), and a group sbom
   carries on after a failed sub-sbom. Read the output and the =cbmProc.status= lines (both
   recorded in =AI-Outputs.org=).
@@ -231,6 +234,7 @@ table live from the tree (gate, last outcome, what each =.here= answers) as of i
 | geneweb         | enabled | geneweb.here        | raw platform | ged2gwb, gwb2ged                   |
 | reactPlus       | enabled | ---                 | raw platform | sbom only, no units                |
 | gatsbyBxSidebar | enabled | starterSidebar.here | raw platform |                                    |
+| csPlayerPerf    | enabled | ---                 | raw platform | the performer csPlayerUi calls     |
 | csPlayerUi      | enabled | csPlayerUi.here     | raw platform | Gatsby site wrapping csLineInvoker |
 | platform        | enabled | platform.here       | raw platform | this table as a site; last         |
 
@@ -258,11 +262,23 @@ platform where this was written: the starter's =public/= has not been built ther
 - *geneweb* serves an empty =demo= base out of the box; wizard password =geneweb=; gwsetup is not
   run (it cannot bind an address).
 
-Under =collective/induct/=, which the walk does not reach yet (see Open Items):
+Under =collective/induct/= (no units; walked last since 2026-11-13), in walk order:
 
-| Capability   | Gate      | =.here= | Real home    | Usage side, notes                           |
-|--------------+-----------+---------+--------------+---------------------------------------------|
-| vscodeClaude | available | ---     | each desktop | per user: run as the VS Code user, not root |
+| Capability        | Gate      | Real home    | Notes                                        |
+|-------------------+-----------+--------------+----------------------------------------------|
+| pltfrmDevelBecome | available | devel VM/box | git anon to auth, pip PyPI to editable       |
+| lcntCore          | enabled   | raw platform | the LCNT toolchain                           |
+| lcntBases         | enabled   | raw platform | the LCNT bases under =/de/sys/lcnt=          |
+| lcntMultiMedia    | enabled   | raw platform | reveal.js, video; a box adds v4l2loopback    |
+| emacsSrcBuild     | enabled   | raw platform | Emacs 31 from source, the default =emacs=    |
+| bleeBuild         | enabled   | raw platform | Blee (doom-blee3) for Emacs 31               |
+| vscodeClaude      | available | each desktop | per user: run as the VS Code user, not root  |
+
+- *pltfrmDevelBecome*, *emacsSrcBuild*, *bleeBuild* ---
+  =/bisos/git/bxRepos/bisos-pip/capSpecs/py3/bin/=. emacsSrcBuild and bleeBuild point to the
+  generic symlinks =emacsSrcBuild-cbs.pcs= and =bleeBuild-cbs.pcs=, which choose the Emacs
+  generation (today =emacs31SrcBuild-cbs.pcs=, =blee31Build-cbs.pcs=).
+- *lcntCore*, *lcntBases*, *lcntMultiMedia* --- =/bisos/git/bxRepos/bisos-pip/lcnt/py3/bin/=.
 
 - *vscodeClaude* --- =/bisos/git/bxRepos/bisos-pip/vscodeClaude/py3/bin/vscodeClaude-cbs.pcs=, of
   type =induct= (no units): =vscode-sbom.pcs= (VS Code, through sudo), then
@@ -283,8 +299,8 @@ Under =collective/induct/=, which the walk does not reach yet (see Open Items):
 
 ** Declared, Not Yet Specified
 
-Leaf directories with a (blank) =README.org= and no =cbmProc.spcs=: =induct/lcnt=,
-=induct/bleeBuild=, =induct/emacsSrcBuild=, =rpyc/facterPerf=, =hereMail/residentMta=.
+Leaf directories with a (blank) =README.org= and no =cbmProc.spcs=: =rpyc/facterPerf=,
+=hereMail/residentMta=.
 
 * Measured Footprints
 
@@ -326,8 +342,8 @@ Airflow's load is 129 task processes under =parallelism = 128=. GitLab was not m
 - gitlab's first materialization, in a dedicated VM.
 - Kafka's and Airflow's minimal forms, and whether the generic packages default to minimal
   (kafka's base currently writes =-Xms512m -Xmx1g= and a 512m Kafbat heap).
-- The walk beyond =collective/hereWeb= (ordering), so that =induct=, =rpyc= and =hereMail=
-  leaves are covered.
+- The walk from =collective/= itself (ordering), instead of one call per branch, so that =rpyc=
+  and =hereMail= leaves are covered when they come.
 - An exit status a regression run can trust (=g_csMain=; =sbomSpecs_fullUpdate=).
 - Layer 3: niching and CapabilityBPOs.
 

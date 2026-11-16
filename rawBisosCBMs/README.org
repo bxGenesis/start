@@ -205,8 +205,8 @@ Current properties of the walk, to know when reading its results:
   leaves yet).
 - *Order*: =branchesOrdered= in each branch's =ftoBranchProc.spcs=. =collective/hereWeb= (today:
   nginx, airflow, kafka, prometheus, grafana, pypiserver, devpi, geneweb, reactPlus,
-  gatsbyBxSidebar, csPlayerPerf, csPlayerUi, platform): a new leaf goes after what it depends on,
-  and before =platform=. =collective/induct= (today: pltfrmDevelBecome, lcntCore, lcntBases,
+  gatsbyBxSidebar, csPlayerPerf, csPlayerUi, astroStarter, platform): a new leaf goes after what it
+  depends on, and before =platform=. =collective/induct= (today: pltfrmDevelBecome, lcntCore, lcntBases,
   lcntMultiMedia, emacsSrcBuild, bleeBuild, vscodeClaude).
 - *Exit status is not the verdict*: a failed Cmnd still exits 0 (=g_csMain=), and a group sbom
   carries on after a failed sub-sbom. Read the output and the =cbmProc.status= lines (both
@@ -236,6 +236,7 @@ table live from the tree (gate, last outcome, what each =.here= answers) as of i
 | gatsbyBxSidebar | enabled | starterSidebar.here | raw platform |                                    |
 | csPlayerPerf    | enabled | ---                 | raw platform | the performer csPlayerUi calls     |
 | csPlayerUi      | enabled | csPlayerUi.here     | raw platform | Gatsby site wrapping csLineInvoker |
+| astroStarter    | enabled | astroStarter.here   | raw platform | the Astro starter; LCNT Library    |
 | platform        | enabled | platform.here       | raw platform | this table as a site; last         |
 
 Where each leaf's CBS (=cbsSpec=) is:
@@ -247,6 +248,8 @@ Where each leaf's CBS (=cbsSpec=) is:
 - gatsbyBxSidebar --- =/bisos/git/bxRepos/bisos-web/gatsby-starter-bystar-nestedSidebar/=
   =gatsbyBxSidebar-cbs.pcs=
 - csPlayerUi --- =/bisos/git/bxRepos/bisos-web/csPlayer-webUi/csPlayerUi-cbs.pcs=
+- astroStarter --- =/bisos/git/bxRepos/bisos-web/astro-starter-bystar/cbm/astroStarter-cbs.pcs=
+  (planted 2026-11-16; its Library tab has pages only once an LCNT document is exported to its =var/=)
 - platform --- =/bisos/platform/web/astro/cbm/platform-cbs.pcs= (in =bro_rawBisos= itself)
 
 The six =bisos.<name>= leaves were planted on 2026-10-16. Each package had been materialized and
@@ -262,17 +265,27 @@ platform where this was written: the starter's =public/= has not been built ther
 - *geneweb* serves an empty =demo= base out of the box; wizard password =geneweb=; gwsetup is not
   run (it cannot bind an address).
 
+Under =pals/= (walked after =collective/hereWeb=), planted by bisos.pals (=palsOfSys.cs -i
+palsLeavesPlant=), which creates a gate as =available= and never overwrites it:
+
+| Capability               | Gate    | =.here=          | Real home    | Notes                 |
+|--------------------------+---------+------------------+--------------+-----------------------|
+| bro_rawBisosPals/example | enabled | example.org.here | raw platform | the example PALS site |
+
+- *example* --- =pals-cbs.spcs= in =bro_rawBisosPals/bySmb/example/web/astro/cbm/=, a symlink to
+  bisos.pals's generic CBS. Enabled 2026-11-16, so every rawBisosCbm materializes a PALS site.
+
 Under =collective/induct/= (no units; walked last since 2026-11-13), in walk order:
 
-| Capability        | Gate      | Real home    | Notes                                        |
-|-------------------+-----------+--------------+----------------------------------------------|
-| pltfrmDevelBecome | available | devel VM/box | git anon to auth, pip PyPI to editable       |
-| lcntCore          | enabled   | raw platform | the LCNT toolchain                           |
-| lcntBases         | enabled   | raw platform | the LCNT bases under =/de/sys/lcnt=          |
-| lcntMultiMedia    | enabled   | raw platform | reveal.js, video; a box adds v4l2loopback    |
-| emacsSrcBuild     | enabled   | raw platform | Emacs 31 from source, the default =emacs=    |
-| bleeBuild         | enabled   | raw platform | Blee (doom-blee3) for Emacs 31               |
-| vscodeClaude      | available | each desktop | per user: run as the VS Code user, not root  |
+| Capability        | Gate      | Real home    | Notes                                       |
+|-------------------+-----------+--------------+---------------------------------------------|
+| pltfrmDevelBecome | available | devel VM/box | git anon to auth, pip PyPI to editable      |
+| lcntCore          | enabled   | raw platform | the LCNT toolchain                          |
+| lcntBases         | enabled   | raw platform | the LCNT bases under =/de/sys/lcnt=         |
+| lcntMultiMedia    | enabled   | raw platform | reveal.js, video; a box adds v4l2loopback   |
+| emacsSrcBuild     | enabled   | raw platform | Emacs 31 from source, the default =emacs=   |
+| bleeBuild         | enabled   | raw platform | Blee (doom-blee3) for Emacs 31              |
+| vscodeClaude      | available | each desktop | per user: run as the VS Code user, not root |
 
 - *pltfrmDevelBecome*, *emacsSrcBuild*, *bleeBuild* ---
   =/bisos/git/bxRepos/bisos-pip/capSpecs/py3/bin/=. emacsSrcBuild and bleeBuild point to the

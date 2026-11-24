@@ -109,7 +109,10 @@ Leaves live at =/bisos/platform/sys/cbm/<realm>/<capabilityType>/<capabilityName
 - *capability type* --- how it is delivered: =hereWeb=, =hereMail=, =rpyc=, =induct=.
 
 Each leaf holds =cbmProc.spcs= (the pointer: =capabilityName= + =cbsSpec=), =cbmProc.control= (the
-gate) and =cbmProc.status= (an append-only outcome log). The gate is:
+gate) and, where the CBS needs packages first, =cbmBootstrap-sbom.pcs= (pip packages into =bisos3=,
+run before each materialize). Its append-only outcome log is not in the leaf, which may be a
+read-only clone: it is =/bisos/var/cbm/<leafRel>/cbmProc.status= (=cbm_status= prints it; since
+2026-11-24, bxGenesis/base 3.1.2). The gate is:
 
 - *=enabled=* --- materialized when the tree is materialized.
 - *=available=* --- planted and visible, never materialized automatically (the initial state).
@@ -241,10 +244,11 @@ table live from the tree (gate, last outcome, what each =.here= answers) as of i
 
 Where each leaf's CBS (=cbsSpec=) is:
 
-- nginx, reactPlus --- =/bisos/git/bxRepos/bisos-pip/webCap/py3/bin/{nginx,reactPlus}-cbs.pcs=
-  (bisos.webCap; moved from =/bisos/asc/web/bin= on 2026-10-18)
-- airflow, kafka, prometheus, grafana, pypiserver, devpi, geneweb ---
-  =/bisos/git/bxRepos/bisos-pip/<name>/py3/bin/<name>-cbs.pcs=
+- nginx, reactPlus --- =nginx-cbs.pcs=, =reactPlus-cbs.pcs=, on PATH from bisos.webCap (moved from
+  =/bisos/asc/web/bin= on 2026-10-18); the bootstrap installs bisos.webCap.
+- airflow, kafka, prometheus, grafana, pypiserver, devpi, geneweb --- =<name>-cbs.pcs=, on PATH from
+  =bisos.<name>=, which the leaf's bootstrap installs into =bisos3= (a git path until 2026-11-24, which
+  an anon install without the package could not run).
 - gatsbyBxSidebar --- =/bisos/git/bxRepos/bisos-web/gatsby-starter-bystar-nestedSidebar/=
   =gatsbyBxSidebar-cbs.pcs=
 - csPlayerUi --- =/bisos/git/bxRepos/bisos-web/csPlayer-webUi/csPlayerUi-cbs.pcs=
@@ -342,11 +346,11 @@ Airflow's load is 129 task processes under =parallelism = 128=. GitLab was not m
 2. Decide its minimal configuration for the rawBisosCbm set, and whether it is typically run in a
    dedicated VM.
 3. Plant its leaf in =bro_rawBisos=, at =bro_rawBisosPlatform/sys/cbm/<realm>/<type>/<name>/=:
-   =cbmProc.spcs= pointing at its CBS, =cbmProc.control=, an empty =cbmProc.status= (the
-   =cbm-authorship= skill).
+   =cbmProc.spcs= pointing at its CBS, =cbmProc.control=, and a =cbmBootstrap-sbom.pcs= when the CBS
+   needs packages the platform does not install (the =cbm-authorship= skill).
 4. Set the gate: =enabled= to join the rawBisosCbm set, =available= to be planted only.
 5. Add it to =branchesOrdered= after what it depends on, and to the tables above.
-6. Run =sysCbmManage.cs -i fullyMaterialize=; read the output and the leaf's =cbmProc.status=.
+6. Run =sysCbmManage.cs -i fullyMaterialize=; read the output and the leaf's status (=cbm_status=).
 
 * Open Items
 

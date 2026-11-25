@@ -42,6 +42,11 @@ Stage 4 (pointer, not a copy): the walk is hereWeb, pals, then induct; csPlayerP
 table; a new induct table (7 leaves); "Declared, Not Yet Specified" down to =rpyc/facterPerf= and
 =hereMail/residentMta=.
 
+2026-11-25: =raw-bisos.sh= =installUnsitedBisos= enables =deb-src= at its apt-sources step
+(=vis_aptSourcesDebSrcEnable=: deb822 =debian.sources= and =sources.list=, the Debian archive only),
+and skips the cdrom step when there is no =sources.list= (Debian 13). For =apt-get build-dep emacs=
+(=emacs31SrcBuild=). Recorded in bxGenesis/base AI-WorkPlan.org 3.2.8; untested on the VM.
+
 * Architecture
   [Key components, file structure, entry points]
 

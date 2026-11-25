@@ -147,10 +147,13 @@ _EOF_
 
     lpDo sudo tail -1 /etc/sudoers 
 
-    ANT_raw "About to adjust /etc/apt/sources.list."
-    lpDo sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.orig
-    lpDo eval sudo grep -v \'^deb cdrom:\' /etc/apt/sources.list \> /tmp/sources.list
-    lpDo sudo mv /tmp/sources.list /etc/apt/sources.list
+    ANT_raw "About to adjust the apt sources: no cdrom, and deb-src enabled."
+    if [ -f /etc/apt/sources.list ] ; then   # Debian 13 may have none (deb822 debian.sources)
+        lpDo sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.orig
+        lpDo eval sudo grep -v \'^deb cdrom:\' /etc/apt/sources.list \> /tmp/sources.list
+        lpDo sudo mv /tmp/sources.list /etc/apt/sources.list
+    fi
+    vis_aptSourcesDebSrcEnable
     lpDo sudo apt-get update
 
     ANT_raw "In case of failure of any sort, don't worry; you will have emacs."
@@ -181,6 +184,44 @@ _EOF_
     lpReturn
 }
 
+function vis_aptSourcesDebSrcEnable {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+Enable deb-src for the Debian archive, so that apt-get build-dep works (e.g. emacs31SrcBuild).
+Done here, at the start of the install, not in a CBM (decided 2026-11-12).
+- deb822 (Debian 13): Types: deb becomes Types: deb deb-src in /etc/apt/sources.list.d/debian.sources.
+- /etc/apt/sources.list: a deb-src twin of each Debian deb line that lacks one.
+Only the Debian archive: a third-party repository may publish no sources. Idempotent.
+The caller runs apt-get update.
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    local deb822File="/etc/apt/sources.list.d/debian.sources"
+    local listFile="/etc/apt/sources.list"
+
+    if [ -f "${deb822File}" ] ; then
+        lpDo sudo cp -n -p "${deb822File}" "${deb822File}.orig"
+        lpDo sudo sed -i 's/^Types:[[:space:]]*deb[[:space:]]*$/Types: deb deb-src/' "${deb822File}"
+        lpDo grep '^Types:' "${deb822File}"
+    fi
+
+    if [ -f "${listFile}" ] ; then
+        # Print the file, then the deb-src twin of each Debian deb line that has none yet.
+        local twinsAwk='/^deb-src /{have[$0]=1} {print} /^deb / && /[./]debian\.org\// && !/cdrom:/ {n++; want[n]="deb-src " substr($0,5)} END{for(i=1;i<=n;i++) if(!(want[i] in have)) print want[i]}'
+        awk "${twinsAwk}" "${listFile}" > /tmp/sources.list.debSrc
+        if ! cmp -s /tmp/sources.list.debSrc "${listFile}" ; then
+            ANT_raw "Adding deb-src lines to ${listFile}"
+            lpDo sudo cp -n -p "${listFile}" "${listFile}.orig"
+            lpDo sudo cp /tmp/sources.list.debSrc "${listFile}"
+        fi
+        rm -f /tmp/sources.list.debSrc
+        lpDo grep '^deb-src ' "${listFile}"
+    fi
+
+    lpReturn 0
+}
+
 
 function vis_examples {
     typeset extraInfo="-h -v -n showRun"
@@ -198,6 +239,8 @@ function vis_examples {
 $( examplesSeperatorTopLabel "${G_myFullName}" )
 $( examplesSeperatorChapter "BISOS Provisioning:: DeBisosIfy for ReInstallation" )
 ${G_myName} ${extraInfo} -i deBisosIfy
+$( examplesSeperatorChapter "BISOS Provisioning:: Apt Sources (part of installUnsitedBisos)" )
+${G_myName} ${extraInfo} -i aptSourcesDebSrcEnable
 $( examplesSeperatorChapter "BISOS Provisioning:: Standalone ICM Sets Up Selfcontained ICMs" )
 ${G_myName} ${extraInfo} -i installUnsitedBisos
 ${G_myName} ${extraInfo} -p debInstRootPasswd=intra -i installUnsitedBisos

@@ -11,6 +11,21 @@
 #   Command:   /bisos/venv/py3/devbin/aiActivity.cs -i initiate --activity=bisos-genesis
 
 ####+BEGIN: b:ai:workflow/driver
+*  [[elisp:(revert-buffer)][revert-buffer]] | [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] [[elisp:(save-buffer)][Save]] [[elisp:(kill-buffer)][Quit]] [[elisp:(bury-buffer)][Bury]] [[elisp:(magit)][Magit]]
+*  [[elisp:(org-cycle)][AI Workflow Driver]]  --  *$Emacs*  *^Bash*  /@VS Code/  #prompt-claude  _!submit-claude_
+  State     :: (Refresh, on the Info line, shows the session)
+  Info      :: *[[elisp:(b:ai:workflow/driver/refresh)][$Refresh]]* | *[[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/bisos-pip/bisos.aiActivity/newStart/_nodeBase_")][$Panel]]* | *[[elisp:(b:vscode:claude/dispatch)][$Transient]]* | *[[elisp:(b:vscode/partnerShow)][$partner]]* | *[[file:/bisos/git/bxRepos/blee/vscode-claude/README.org][$vscode-claude-README]]* | *[[file:/bisos/git/bxRepos/bisos-pip/aiActivity/README.org][$aiActivity-README]]*
+  newStart  :: *[[bashRun:vscodeClaude-assemble.cs -i fullCheck][$setup-check]]* | *[[bashRun:vscodeClaude-assemble.cs -i fullUpdate][$setup]]* | *[[elisp:(b:vscode/init)][$partner-init]]* | [[aiActivity:session-start][#session-start]] | _[[aiActivity:S=session-start][!session-start]]_
+  VS Code   :: *[[bashRunHere:vscode.cs][^vscode.cs]]* | *[[bashRunHere:vscodeClaude.cs][^vscodeClaude.cs]]* | /[[elisp:(b:vscode/fileOpen)][@Visit]]/ | /[[elisp:(b:vscode/rootOpen)][@root-window]]/   <- Ctrl+K Ctrl+E
+  Session   :: *[[elisp:(b:vscode:claude/sessionSelect)][$select-session]]* | [[aiActivity:session-start][#session-start]] | [[aiActivity:session-report][#session-report]] | [[aiActivity:session-summary][#session-summary]] | _[[aiActivity:S=session-start][!session-start]]_
+  Activity  :: *[[bashRunHere:aiActivity.cs][^aiActivity.cs]]* | [[aiActivity:activity-reach][#activity-reach]] | [[aiActivity:activity-report][#activity-report]] | _[[aiActivity:S=activity-reach][!activity-reach]]_
+  Read      :: [[aiActivity:status-read][#status-read]] | [[aiActivity:archive-read][#archive-read]] | [[aiActivity:ai-outputs][#ai-outputs]] | _[[aiActivity:S=status-read][!status-read]]_ | _[[aiActivity:S=archive-read][!archive-read]]_ | _[[aiActivity:S=ai-outputs][!ai-outputs]]_
+  Work      :: [[aiActivity:todo-do][#todo-do]] | [[aiActivity:todo-done][#todo-done]] | _[[aiActivity:S=todo-do][!todo-do]]_ | _[[aiActivity:S=todo-done][!todo-done]]_ | *[[elisp:(b:ai:workflow/driver/aiOutputsVisit)][$Visit-AiOutputs]]*
+  Record    :: [[aiActivity:status-update][#status-update]] | [[aiActivity:archive-update][#archive-update]] | [[aiActivity:context-trim][#context-trim]] | _[[aiActivity:S=status-update][!status-update]]_ | _[[aiActivity:S=archive-update][!archive-update]]_
+  Git       :: [[aiActivity:git-uncommitted-list][#git-uncommitted-list]] | [[aiActivity:git-commit-msg][#git-commit-msg]] | _[[aiActivity:S=git-uncommitted-list][!git-uncommitted-list]]_ | _[[aiActivity:S=git-commit-msg][!git-commit-msg]]_
+  Close     :: [[aiActivity:session-verify][#session-verify]] | [[aiActivity:skills-improve][#skills-improve]] | _[[aiActivity:S=git-commit-walk][!git-commit-walk]]_ | _[[aiActivity:S=git-pull-list-add][!git-pull-list-add]]_
+  newResume :: *[[bashRun:git -C /bxRepos/blee-binders/evolution pull --rebase][$outputs-pull]]* | *[[elisp:(b:ai:workflow/driver/pullListVisit)][$pull-list]]* | *[[bashRun:pipPkgsStatus.cs -i pkgsStatus][$pipPkgsStatus]]* | [[aiActivity:newResume-confirm][#newResume-confirm]] | _[[aiActivity:S=newResume-confirm][!newResume-confirm]]_
+
 ####+END:
 
 ####+BEGIN: b:ai:file/particulars
@@ -248,6 +263,114 @@ bx-blee/vscode-claude the old way --- enough for a full rebuild on a VM.
 - bisos/common has no AI files: its one change (the blee/vscode-claude gitClone line) is recorded
   here only.
 Not yet: the VM rebuild (after pushing bisos/bsip4 and releasing bisos.common).
+** -
+
+
+* Stage 3: Bash Problems Seen in a Fresh rawBisos Container Run
+
+<<Stage 3>>
+
+Goal: a fresh Debian 13 run of raw-bisos with no false PROBLEM, ERROR or "No such file" lines, so
+that a real failure stands out.
+
+Source: the docker run of 2026-11-26 (=rawBuildContainer.cs -i procContainer --freshDeb="13"=,
+bisos_deb13-sysd), log in =mb-ephemera/pub-shuttle/tmp/2611261234/rawBisos.log= (ephemera: the
+tables below are the record). Only the bash problems of the base install are here; those of the
+CBM run (rawBisosCbm.log) belong to their packages.
+
+The log echoes each script's source before running it: an =ERROR= inside a =** cmnd== block is
+source text, not output. None of these stopped the run.
+
+| #  | Log  | Problem                                                  | Cause                         |
+|----+------+----------------------------------------------------------+-------------------------------|
+| 1  | 229  | cp/grep: /etc/apt/sources.list: No such file             | Deb13 uses debian.sources;    |
+|    |      |                                                          | an empty sources.list is left |
+| 2  | 700  | "OBSOLETED -- NOT Runing ...": No such file              | the message is run as a cmnd  |
+| 3  | 704  | bisosBaseDirsSetup.sh:149: .../venv/py3/bin/activate     | that venv is no longer made   |
+| 4  | 1213 | rm: cannot remove '/etc/osmtInfo'                        | absent on a first run         |
+| 5  | 1259 | PROBLEM: bystar account is misconfigured                 | the image made bystar first   |
+|    |      | (gid 1000 not 2222, home /home/bystar)                   | (container only)              |
+| 6  | 1277 | usermod: group 'employee' does not exist, and 11 more    | groups not yet created        |
+|    |      | (subscrbr lpadmin scanner netdev vboxsf vboxusers        |                               |
+|    |      | libvirt kvm qmail dovecot docker)                        |                               |
+| 7  | 1319 | unknown key type dsa; FAILED: ssh-keygen -t dsa, rc 255  | OpenSSH 10 dropped DSA        |
+| 8  | 1774 | WARNING: /etc/aliases ... does not have a root alias     | Postfix default config        |
+| 9  | 3238 | PROBLEM: /bisos/venv/py3/bisos3 exists and forceMode ... | the venv is made twice        |
+| 10 | 1384 | useradd warning: bxisoDelimiter's uid 1000000 outside    | intended uid; cosmetic        |
+|    |      | of UID_MIN/UID_MAX                                       |                               |
+| 11 | 7508 | ALERT: Missing .../bisosDev/control/currents/fp          | no currents on a fresh host   |
+|    |      | (and 47 times in rawBisosCbm.log)                        |                               |
+
+| #  | Where (under /bisos/git/bxRepos)             | Suggested fix                                 |
+|----+----------------------------------------------+-----------------------------------------------|
+| 1  | bisos-pip/provision/py3/bin/                 | skip vis_adjustSourcesList when               |
+|    | provisionBisos.sh:139 vis_adjustSourcesList  | /etc/apt/sources.list is absent               |
+| 2  | bxGenesis/provisioners/bin/                  | echo the message (or drop the line),          |
+|    | bisosProvisioners_lib.sh:287                 | not lpDo it                                   |
+| 3  | bxGenesis/provisioners/bin/                  | source activate only if it exists,            |
+|    | bisosBaseDirsSetup.sh:149                    | or remove the line                            |
+| 4  | bisos/bsip4/bin/bsipProvision_lib.sh:115     | sudo rm -f /etc/osmtInfo                      |
+| 5  | bisos/bsip4/bin/bisosAccounts_lib.sh:240-273 | a NOTE when the reconfigure succeeds; or make |
+|    | (vis_usgAcctCreate)                          | bystar in the image with gid 2222, bxo home   |
+| 6  | bisos/bsip4/bin/bisosAccounts_lib.sh:~558    | create employee and subscrbr first; append    |
+|    |                                              | the others only when getent group has them    |
+| 7  | bisos/bsip4/bin/lcaSshAdmin.sh:376 (user)    | drop dsa; generate ed25519 beside rsa         |
+|    | and :209 (host key)                          |                                               |
+| 8  | the postfix setup (to find, bsip4)           | add root: bystar to /etc/aliases; newaliases  |
+| 9  | bisos/bsip4/bin/bisosPyVenvSetup.sh:264      | an existing venv without forceMode: a NOTE,   |
+|    | (virtenvReInstall)                           | not EH_problem                                |
+| 10 | the bxisoDelimiter useradd (to find, bsip4)  | useradd -K UID_MAX=..., or leave it           |
+| 11 | the code printing the ALERT (to find)        | create a default currents/fp at provisioning, |
+|    |                                              | or log it instead of ALERT when absent        |
+
+Not here: npm "deprecated" warnings (upstream), and the =git clone git://= display lines (the
+clones succeeded).
+
+* Stage 3 TODOs
+** +
+** TODO [#B] <<3.1>> provisionBisos.sh: sources.list on Debian 13 (row 1)  :aiAndMe:
+:PROPERTIES:
+:REPO: bisos-pip/provision
+:END:
+----- AI Results: ------
+
+** TODO [#B] <<3.2>> bxGenesis/provisioners: the obsoleted venv (rows 2, 3)  :aiAndMe:
+:PROPERTIES:
+:REPO: bxGenesis/provisioners
+:END:
+----- AI Results: ------
+
+** TODO [#B] <<3.3>> bsip4: osmtInfo, accounts, ssh keys, aliases, venv, uid (rows 4--10)  :aiAndMe:
+:PROPERTIES:
+:REPO: bisos/bsip4
+:END:
+Row 7 first: DSA is gone from OpenSSH, so the host-key line (:209) may fail on other paths too.
+----- AI Results: ------
+
+** TODO [#C] <<3.4>> The currents/fp ALERT on a fresh host (row 11)  :aiAndMe:
+Find which code prints it, then decide: a default at provisioning, or a quieter message.
+----- AI Results: ------
+
+** TODO [#B] <<3.5>> Re-run the fresh Debian 13 container; check the tables are clear  :aiAndMe:
+After 3.1--3.4 and 3.6: =rawBuildContainer.cs -i procContainer --freshDeb="13"= on the VM; grep the
+log for PROBLEM, ERROR and "No such file" outside =** cmnd== blocks.
+----- AI Results: ------
+
+** TODO [#A] <<3.6>> emacsSrcBuild linked emacsclient to /usr/bin/bash (rawBisosCbm.log)  :aiAndMe:
+:PROPERTIES:
+:REPO: bisos/blee, bisos-pip/capSpecs
+:END:
+Not a base-install problem: the CBM run's =emacsSrcBuild= leaf (rawBisosCbm.log 9694):
+: client link  FAIL /usr/local/bin/emacsclient -> /usr/bin/bash (absent or an emacsclient)
+=lcaEmacsSrcBinsPrep.sh= =setAsDefault= ended with =bleeclient emacsClientMatchingSet=, which takes
+the version from the running Emacs server; in a container with none it took the parent shell.
+Masked: the leaf printed =ran: cbs_materialize ok= (bisos-pip/b Stage 4). Blee 31 itself runs.
+----- AI Results: ------
+- 2026-11-26: fixed in bisos/blee =lcaEmacsSrcBinsPrep.sh= (=setAsDefault= links =emacsclient= to the
+  =emacsclient-<fullVer>= of the same build) and in bisos-pip/capSpecs (=clientLinkOk= requires
+  =emacsclient-31.1=; =fullUpdate= re-runs =setAsDefault= when a link is wrong). Detail: capSpecs
+  =AI-WorkPlan.org= =<<1.2>>= Results. Not run in a container yet: 3.5 checks it.
+
 ** -
 
 

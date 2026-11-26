@@ -26,6 +26,9 @@ Note to a fresh Claude: this file is intentionally sparse at project start.
 Fill in the sections below when asked to update, following the structure provided.
 
 * Current State
+- 2026-11-26 (from a bisos-pip/b session): every =<name>.here= in this repo is now =<name>.internal=
+  (=.here= is an https-only gTLD in Chrome; bisos-pip/banna AI-WorkPlan.org Stage 4, banna's
+  =tcpPorts.hereFqdn=). Text renamed, not tested here; AI-WorkPlan.org keeps =.here= as history.
 As of 2026-11-02. Initiated as the bisos-genesis AI-Activity, a singleton (one kind, one instance:
 the one Raw-BISOS chain), so its AI-Activity.org holds the chain, the absorption table and how to
 check a platform. WorkPlan 2.1: this container checked against the chain, read-only; the gaps are

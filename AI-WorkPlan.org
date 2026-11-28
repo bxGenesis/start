@@ -371,6 +371,35 @@ Masked: the leaf printed =ran: cbs_materialize ok= (bisos-pip/b Stage 4). Blee 3
   =emacsclient-31.1=; =fullUpdate= re-runs =setAsDefault= when a link is wrong). Detail: capSpecs
   =AI-WorkPlan.org= =<<1.2>>= Results. Not run in a container yet: 3.5 checks it.
 
+** TODO [#A] <<3.7>> A box run: an unreadable install home, and a stale raw-bisos.sh  :aiAndMe:
+:PROPERTIES:
+:REPO: bxGenesis/start, bisos/bsip4
+:END:
+A box run (=unsitedBisosDeploy.sh -i l1_raw_bisos= to a reused Debian 13 box, install account
+=intra=; log =mb-ephemera/pub-shuttle/tmp/2611262000-box/rawBisos.log=):
+
+| # | Log       | Problem                                           | Cause                           |
+|---+-----------+---------------------------------------------------+---------------------------------|
+| 1 | 9-16      | wget saved raw-bisos.sh.2; the old ./raw-bisos.sh | wget without -O, and a reused   |
+|   |           | ran                                               | box                             |
+| 2 | 3037-3707 | 15 pipx installs: PermissionError: 'twine', ...   | sudo -u bisos keeps the cwd,    |
+|   | 6604-6657 | bisos.gnome; then gnomeBisos.cs: command not      | /home/intra (0700); pipx stats  |
+|   |           | found                                             | the name as a local script      |
+| 3 | 5699 6458 | popd: /home/intra: Permission denied              | the same cwd, in sudo -u bystar |
+
+Not in the container run: there the install account is bystar, whose home is readable.
+----- AI Results: ------
+- 2026-11-27: fixed, not yet run on a box.
+  - Row 1: =wget -O raw-bisos.sh= in bisos/bsip4 =unsitedBisosDeploy.sh= (=l1_raw_bisos=) and in the
+    two Debian 12 and 13 heredocs of =sysCharGuestMaterialize.sh=. With the current script a reused
+    box now stops at its "Unexpected /bisos -- Aborting" check (=vis_installUnsitedBisos=): a box run
+    needs a fresh Debian install.
+  - Row 2: =sudo -u bisos env -C /bisos ...pipx install= in bsip4 =lcaPythonCommonBinsPrep.sh=
+    (=vis_pipxInstalls=) and =bsipProvision_lib.sh= (=bisos.gnome=). Checked on the dev host: with
+    =env -C /bisos=, a relative stat from an unreadable cwd no longer raises.
+  - Row 3 (and row 2 for every other entry point): =lpDo cd /= in =raw-bisos.sh=
+    =vis_installUnsitedBisos=, before =provisionBisos.sh=, so every =sudo -u= child starts in =/=.
+
 ** -
 
 

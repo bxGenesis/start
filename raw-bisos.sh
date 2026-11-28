@@ -159,6 +159,10 @@ _EOF_
     ANT_raw "In case of failure of any sort, don't worry; you will have emacs."
     lpDo sudo apt-get install -y emacs
 
+    # The sudo -u bisos / bystar children inherit this directory. On a box, the installing account's
+    # home is 0700 and they cannot read it (pipx PermissionError, "popd: Permission denied").
+    lpDo cd /
+
     if sysOS_isDeb13 ; then
        ANT_raw "Debian 13, Very Good, You will be current! Installing bisos.provision with pipx"
        lpDo sudo apt-get install -y acl
